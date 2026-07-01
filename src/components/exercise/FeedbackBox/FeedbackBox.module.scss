@@ -1,0 +1,48 @@
+.box {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.correct {
+  border-color: #7bc596;
+  background: #f0fbf4;
+}
+
+.incorrect {
+  border-color: #f0a29a;
+  background: #fff5f4;
+}
+
+.title,
+.message,
+.solution,
+.explanation,
+.reasoningTitle {
+  margin: 0;
+}
+
+.title {
+  color: #111827;
+  font-weight: 800;
+}
+
+.message,
+.solution,
+.explanation {
+  color: #253041;
+  line-height: 1.5;
+}
+
+.reasoning {
+  display: grid;
+  gap: 0.375rem;
+  border-top: 1px solid rgba(23, 32, 51, 0.14);
+  padding-top: 0.75rem;
+}
+
+.reasoningTitle {
+  font-weight: 700;
+}

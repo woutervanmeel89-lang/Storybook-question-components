@@ -1,0 +1,71 @@
+# Storybook Question Components
+
+React component library voor interactieve oefenvragen. Het project bevat herbruikbare question components, Storybook stories, validatiehelpers en TypeScript types voor fill-in-the-blank en short-answer oefeningen.
+
+## Wat zit erin?
+
+- `QuestionPager`: complete oefenflow met voortgang, controle, feedback en herhaalronde voor foute antwoorden.
+- `ShortAnswerQuestion`: open vraag met een tekstantwoord.
+- `FillInTheBlankQuestion`: invulvraag met inline placeholders zoals `{preposition}`.
+- `ReasoningField`: optioneel uitlegveld bij een vraag.
+- `FeedbackBox`: feedback met correct/incorrect tekst, oplossing en uitleg.
+- Validatiehelpers: `validateQuestion`, `isAnswerReady`, `matchesAcceptedAnswer` en `normalizeAnswer`.
+
+## Installatie
+
+```bash
+npm install
+```
+
+## Ontwikkelen
+
+```bash
+npm run dev
+```
+
+Start Storybook op poort `6006`.
+
+## Controleren
+
+```bash
+npm run test:run
+npm run lint
+npm run build
+```
+
+## Gebruik in een app
+
+Importeer de componenten en stylesheet vanuit de package:
+
+```tsx
+import {
+  QuestionPager,
+  type ExerciseQuestion,
+} from 'storybook-question-components';
+import 'storybook-question-components/style.css';
+
+const questions: ExerciseQuestion[] = [
+  {
+    id: 'short-je-vais',
+    type: 'short-answer',
+    prompt: "Quelle est la traduction de 'ik ga' en francais ?",
+    acceptedAnswers: ['je vais', "j'y vais"],
+    feedback: {
+      correct: 'Tres bien.',
+      incorrect: 'Regarde encore le verbe aller.',
+      solution: 'Je vais',
+      explanation: "'Je vais' est la forme correcte de 'ik ga'.",
+    },
+  },
+];
+
+export function Exercise() {
+  return <QuestionPager questions={questions} />;
+}
+```
+
+## Meer documentatie
+
+- [Implementatiegids](./docs/implementation-guide.md): hoe je de library aansluit in een project.
+- [Componenten en datamodel](./docs/component-api.md): props, question types en validatiegedrag.
+
