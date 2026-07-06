@@ -48,6 +48,56 @@ describe('QuestionPager', () => {
     expect(screen.getByText('Très bien.')).toBeInTheDocument();
   });
 
+  it('shows accepted answers after an incorrect short answer', async () => {
+    const user = userEvent.setup();
+    render(
+      <QuestionPager
+        questions={[
+          {
+            ...questions[0],
+            acceptedAnswers: ['je vais', "j'y vais"],
+          },
+        ]}
+      />,
+    );
+
+    await user.type(screen.getByRole('textbox'), 'wrong');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+
+    expect(screen.getByText("je vais / j'y vais")).toBeInTheDocument();
+  });
+
+  it('shows the accepted answer for incorrect blanks', async () => {
+    const user = userEvent.setup();
+    render(
+      <QuestionPager
+        questions={[
+          {
+            id: 'blank-question',
+            type: 'fill-in-the-blank',
+            prompt: 'Nous ___ ___ boulangerie.',
+            blanks: [
+              { id: 'verb', label: 'Verbe', acceptedAnswers: ['allons'] },
+              { id: 'prep', label: 'Preposition', acceptedAnswers: ['a la'] },
+            ],
+            feedback: {
+              correct: 'Correct.',
+              incorrect: 'Regarde encore.',
+              solution: 'Nous allons a la boulangerie.',
+            },
+          },
+        ]}
+      />,
+    );
+
+    await user.type(screen.getByLabelText('Verbe'), 'allons');
+    await user.type(screen.getByLabelText('Preposition'), 'au');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+
+    expect(screen.getByText('Preposition: a la')).toBeInTheDocument();
+    expect(screen.queryByText('Verbe: allons')).not.toBeInTheDocument();
+  });
+
   it('goes to the next question after feedback', async () => {
     const user = userEvent.setup();
     render(<QuestionPager questions={questions} />);

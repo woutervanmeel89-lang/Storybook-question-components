@@ -24,9 +24,11 @@ export function FeedbackBox({
     <section aria-live="polite" className={classes}>
       <p className={styles.title}>{isCorrect ? correctTitle : incorrectTitle}</p>
       <p className={styles.message}>{message}</p>
-      <p className={styles.solution}>
-        <strong>{solutionTitle}:</strong> {solution}
-      </p>
+      {solution ? (
+        <p className={styles.solution}>
+          <strong>{solutionTitle}:</strong> {solution}
+        </p>
+      ) : null}
       {explanation ? <p className={styles.explanation}>{explanation}</p> : null}
       {reasoningFeedback ? (
         <div className={styles.reasoning}>

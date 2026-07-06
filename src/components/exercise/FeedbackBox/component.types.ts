@@ -7,7 +7,7 @@ export interface FeedbackBoxReasoningFeedback {
 export interface FeedbackBoxProps {
   isCorrect: boolean;
   message: string;
-  solution: string;
+  solution?: string;
   className?: string;
   correctTitle?: string;
   explanation?: string;

@@ -44,6 +44,31 @@ function getReasoningFeedback(
   };
 }
 
+function formatAcceptedAnswers(acceptedAnswers: string[]) {
+  return acceptedAnswers.join(' / ');
+}
+
+function getFeedbackSolution(
+  question: ExerciseQuestion,
+  validation: QuestionValidationResult,
+) {
+  if (validation.mainCorrect) {
+    return undefined;
+  }
+
+  if (question.type === 'short-answer') {
+    return formatAcceptedAnswers(question.acceptedAnswers);
+  }
+
+  return question.blanks
+    .filter((blank) => !validation.fields[blank.id]?.isCorrect)
+    .map((blank) => {
+      const label = blank.label ?? blank.id;
+      return `${label}: ${formatAcceptedAnswers(blank.acceptedAnswers)}`;
+    })
+    .join('; ');
+}
+
 export function QuestionPager({
   className,
   completionMessage = 'Alle vragen zijn juist beantwoord.',
@@ -164,6 +189,9 @@ export function QuestionPager({
   const feedbackMessage = validation?.isCorrect
     ? currentQuestion.feedback.correct
     : currentQuestion.feedback.incorrect;
+  const feedbackSolution = validation
+    ? getFeedbackSolution(currentQuestion, validation)
+    : undefined;
 
   return (
     <section className={[styles.pager, className].filter(Boolean).join(' ')}>
@@ -199,7 +227,7 @@ export function QuestionPager({
             isCorrect={validation.isCorrect}
             message={feedbackMessage}
             reasoningFeedback={getReasoningFeedback(currentQuestion, validation)}
-            solution={currentQuestion.feedback.solution}
+            solution={feedbackSolution}
             solutionTitle={feedbackSolutionTitle}
           />
         ) : null}
