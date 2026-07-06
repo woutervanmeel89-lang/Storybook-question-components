@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { ExerciseQuestion } from '../../../types/exercise';
 import { QuestionPager } from './QuestionPager';
 
@@ -91,5 +91,32 @@ describe('QuestionPager', () => {
 
     expect(screen.getByText('Klaar')).toBeInTheDocument();
     expect(screen.getByText('Alle vragen zijn juist beantwoord.')).toBeInTheDocument();
+  });
+
+  it('calls onClose when the final question is completed without retries', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<QuestionPager onClose={onClose} questions={[questions[0]]} />);
+
+    await user.type(screen.getByLabelText('Réponse'), 'je vais');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call onClose when closing starts a retry round', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<QuestionPager onClose={onClose} questions={questions} />);
+
+    await user.type(screen.getByLabelText('Réponse'), 'wrong');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Volgende' }));
+    await user.type(screen.getByLabelText('Préposition'), 'au');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
+
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

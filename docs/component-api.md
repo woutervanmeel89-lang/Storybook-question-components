@@ -20,6 +20,7 @@ Belangrijkste props:
 - `feedbackCorrectTitle`: titel boven correcte feedback.
 - `feedbackIncorrectTitle`: titel boven incorrecte feedback.
 - `feedbackSolutionTitle`: titel boven de oplossing.
+- `onClose`: optionele callback wanneer de gebruiker de flow afsluit nadat alle vragen juist zijn beantwoord.
 - `className`: extra CSS class.
 
 Gedrag:
@@ -240,4 +241,3 @@ const normalized = normalizeAnswer(answer, false);
 ```
 
 Trimt whitespace en maakt het antwoord lowercase wanneer `caseSensitive` uit staat.
-

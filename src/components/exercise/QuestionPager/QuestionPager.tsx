@@ -51,6 +51,7 @@ export function QuestionPager({
   feedbackCorrectTitle = 'Juist',
   feedbackIncorrectTitle = 'Nog niet juist',
   feedbackSolutionTitle = 'Oplossing',
+  onClose,
   questions,
 }: QuestionPagerProps) {
   const [roundQuestions, setRoundQuestions] = useState<ExerciseQuestion[]>(questions);
@@ -145,6 +146,7 @@ export function QuestionPager({
       return;
     }
 
+    onClose?.();
     setIsComplete(true);
   }
 
