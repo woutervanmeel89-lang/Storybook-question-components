@@ -88,3 +88,9 @@ export function Exercise() {
 ## Publiceren naar GitHub Packages
 
 Maak in GitHub een nieuwe release aan, of start de workflow `Publish package` handmatig via Actions. De workflow test, bouwt en publiceert daarna deze package naar GitHub Packages met `GITHUB_TOKEN`.
+
+Bij een GitHub release uploadt de workflow ook een `.tgz` bestand als release asset. Dat bestand kan direct geinstalleerd worden vanuit een ander project, bijvoorbeeld:
+
+```bash
+npm install https://github.com/woutervanmeel89-lang/Storybook-question-components/releases/download/v0.1.2/woutervanmeel89-lang-storybook-question-components-0.1.2.tgz
+```

@@ -4,9 +4,14 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing release tag to upload the tarball to, for example v0.1.2'
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -32,6 +37,17 @@ jobs:
 
       - name: Build package
         run: npm run build
+
+      - name: Pack installable tarball
+        run: npm pack --pack-destination .
+
+      - name: Upload tarball to release
+        if: github.event_name == 'release' || inputs.release_tag != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name || inputs.release_tag }}
+          files: '*.tgz'
+          overwrite_files: true
 
       - name: Publish to GitHub Packages
         run: npm publish
