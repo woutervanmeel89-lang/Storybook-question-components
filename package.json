@@ -1,5 +1,5 @@
 {
-  "name": "storybook-question-components",
+  "name": "@woutervanmeel89-lang/storybook-question-components",
   "version": "0.1.2",
   "description": "A React TypeScript component library built with Vite, Storybook, SCSS, ESLint, and Vitest.",
   "type": "module",
@@ -21,6 +21,14 @@
     "**/*.scss",
     "**/*.css"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woutervanmeel89-lang/Storybook-question-components.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "tsc -p tsconfig.build.json && vite build --config vite.lib.config.ts --configLoader runner",

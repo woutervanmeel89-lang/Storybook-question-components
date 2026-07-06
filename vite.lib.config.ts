@@ -12,7 +12,7 @@ export default defineConfig({
     dts({
       tsconfigPath: './tsconfig.build.json',
       entryRoot: 'src',
-      exclude: ['**/*.stories.tsx', '**/*.test.tsx', 'src/test/**'],
+      exclude: ['**/*.stories.ts', '**/*.stories.tsx', '**/*.test.ts', '**/*.test.tsx', 'src/test/**'],
       insertTypesEntry: true,
     }),
   ],

@@ -13,6 +13,22 @@ React component library voor interactieve oefenvragen. Het project bevat herbrui
 
 ## Installatie
 
+Installeer de package in een app via GitHub Packages:
+
+```bash
+npm install @woutervanmeel89-lang/storybook-question-components
+```
+
+Zet in de app die deze package gebruikt een `.npmrc` met:
+
+```ini
+@woutervanmeel89-lang:registry=https://npm.pkg.github.com
+```
+
+Voor private packages moet de installer ingelogd zijn met een GitHub token dat package-read rechten heeft.
+
+Voor lokaal ontwikkelen in deze repo:
+
 ```bash
 npm install
 ```
@@ -41,8 +57,8 @@ Importeer de componenten en stylesheet vanuit de package:
 import {
   QuestionPager,
   type ExerciseQuestion,
-} from 'storybook-question-components';
-import 'storybook-question-components/style.css';
+} from '@woutervanmeel89-lang/storybook-question-components';
+import '@woutervanmeel89-lang/storybook-question-components/style.css';
 
 const questions: ExerciseQuestion[] = [
   {
@@ -69,3 +85,6 @@ export function Exercise() {
 - [Implementatiegids](./docs/implementation-guide.md): hoe je de library aansluit in een project.
 - [Componenten en datamodel](./docs/component-api.md): props, question types en validatiegedrag.
 
+## Publiceren naar GitHub Packages
+
+Maak in GitHub een nieuwe release aan, of start de workflow `Publish package` handmatig via Actions. De workflow test, bouwt en publiceert daarna deze package naar GitHub Packages met `GITHUB_TOKEN`.
