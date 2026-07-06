@@ -30,12 +30,24 @@ export function FeedbackBox({
         </p>
       ) : null}
       {explanation ? <p className={styles.explanation}>{explanation}</p> : null}
-      {reasoningFeedback ? (
+      {reasoningFeedback && !reasoningFeedback.isCorrect ? (
         <div className={styles.reasoning}>
-          <p className={styles.reasoningTitle}>
-            Uitleg: {reasoningFeedback.isCorrect ? 'juist' : 'nog niet juist'}
-          </p>
-          <p className={styles.message}>{reasoningFeedback.message}</p>
+          {reasoningFeedback.acceptedAnswers?.length ? (
+            <div className={styles.acceptedAnswers}>
+              <p className={styles.acceptedAnswersTitle}>Geaccepteerde antwoorden</p>
+              <ul className={styles.acceptedAnswersList}>
+                {reasoningFeedback.acceptedAnswers.map((answer) => (
+                  <li className={styles.acceptedAnswer} key={answer}>
+                    {answer}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          <div className={styles.reasoningExplanation}>
+            <p className={styles.reasoningTitle}>Extra uitleg</p>
+            <p className={styles.message}>{reasoningFeedback.message}</p>
+          </div>
           {reasoningFeedback.solution ? (
             <p className={styles.solution}>
               <strong>Voorbeeld:</strong> {reasoningFeedback.solution}

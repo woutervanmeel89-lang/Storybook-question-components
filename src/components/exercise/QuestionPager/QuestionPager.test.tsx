@@ -98,6 +98,51 @@ describe('QuestionPager', () => {
     expect(screen.queryByText('Verbe: allons')).not.toBeInTheDocument();
   });
 
+  it('shows accepted reasoning answers prominently after incorrect reasoning', async () => {
+    const user = userEvent.setup();
+    render(
+      <QuestionPager
+        questions={[
+          {
+            id: 'reasoning-question',
+            type: 'fill-in-the-blank',
+            prompt: 'Je parle {prep} professeur.',
+            blanks: [
+              { id: 'prep', label: 'Preposition', acceptedAnswers: ['au'] },
+            ],
+            reasoning: {
+              enabled: true,
+              required: true,
+              prompt: 'Explain why.',
+              acceptedAnswers: ['a + le', 'a le devient au'],
+              validationMode: 'contains',
+              feedback: {
+                correct: 'Correct.',
+                incorrect: 'Mention the contraction.',
+                solution: 'A + le devient au.',
+              },
+            },
+            feedback: {
+              correct: 'Correct.',
+              incorrect: 'Try again.',
+              solution: 'Je parle au professeur.',
+            },
+          },
+        ]}
+      />,
+    );
+
+    await user.type(screen.getByLabelText('Preposition'), 'au');
+    await user.type(screen.getByLabelText('Explain why.'), 'wrong');
+    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+
+    expect(screen.getByText('Geaccepteerde antwoorden')).toBeInTheDocument();
+    expect(screen.getByText('a + le')).toBeInTheDocument();
+    expect(screen.getByText('a le devient au')).toBeInTheDocument();
+    expect(screen.getByText('Extra uitleg')).toBeInTheDocument();
+    expect(screen.getByText('Mention the contraction.')).toBeInTheDocument();
+  });
+
   it('goes to the next question after feedback', async () => {
     const user = userEvent.setup();
     render(<QuestionPager questions={questions} />);

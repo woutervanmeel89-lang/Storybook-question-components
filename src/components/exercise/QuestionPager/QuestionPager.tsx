@@ -37,6 +37,7 @@ function getReasoningFeedback(
 
   return {
     isCorrect,
+    acceptedAnswers: isCorrect ? undefined : question.reasoning.acceptedAnswers,
     message:
       (isCorrect ? feedback?.correct : feedback?.incorrect) ??
       (isCorrect ? 'De uitleg is juist.' : 'De uitleg is nog niet juist.'),

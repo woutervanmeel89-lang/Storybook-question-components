@@ -1,6 +1,6 @@
 {
   "name": "storybook-question-components",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A React TypeScript component library built with Vite, Storybook, SCSS, ESLint, and Vitest.",
   "type": "module",
   "main": "./dist/index.cjs",

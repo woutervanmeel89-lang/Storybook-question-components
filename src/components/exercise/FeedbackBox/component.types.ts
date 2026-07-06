@@ -1,6 +1,7 @@
 export interface FeedbackBoxReasoningFeedback {
   isCorrect: boolean;
   message: string;
+  acceptedAnswers?: string[];
   solution?: string;
 }
 
