@@ -5,6 +5,7 @@ import type {
   FillInTheBlankQuestionData,
 } from '../../../types/exercise';
 import {
+  blankReasoningQuestions,
   fillInTheBlankQuestions,
   multipleBlankQuestions,
 } from '../sampleQuestions';
@@ -45,6 +46,14 @@ export const MultipleInlineBlanks: Story = {
   render: () => (
     <FillInTheBlankQuestionExample
       question={multipleBlankQuestions[0] as FillInTheBlankQuestionData}
+    />
+  ),
+};
+
+export const WithReasoningPerBlank: Story = {
+  render: () => (
+    <FillInTheBlankQuestionExample
+      question={blankReasoningQuestions[0] as FillInTheBlankQuestionData}
     />
   ),
 };

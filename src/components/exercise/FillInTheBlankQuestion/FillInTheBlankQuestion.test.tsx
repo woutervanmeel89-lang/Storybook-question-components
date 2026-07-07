@@ -65,4 +65,91 @@ describe('FillInTheBlankQuestion', () => {
     expect(screen.getByText('Oplossing:')).toBeInTheDocument();
     expect(screen.getByText('au')).toBeInTheDocument();
   });
+
+  it('captures reasoning for a specific blank', async () => {
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+
+    const reasoningQuestion: FillInTheBlankQuestionData = {
+      ...question,
+      blanks: [
+        {
+          id: 'prep',
+          label: 'Preposition',
+          acceptedAnswers: ['au'],
+          reasoning: {
+            enabled: true,
+            required: true,
+            prompt: 'Raisonnement',
+          },
+        },
+      ],
+    };
+
+    function TestComponent() {
+      const [answer, setAnswer] = useState<ExerciseAnswer>({});
+
+      return (
+        <FillInTheBlankQuestion
+          answer={answer}
+          onChange={(nextAnswer) => {
+            setAnswer(nextAnswer);
+            handleChange(nextAnswer);
+          }}
+          question={reasoningQuestion}
+          solutionTitle="Oplossing"
+        />
+      );
+    }
+
+    render(<TestComponent />);
+
+    await user.type(screen.getByLabelText('Preposition'), 'au');
+    await user.type(screen.getByLabelText('Raisonnement'), 'a + le');
+
+    expect(handleChange).toHaveBeenLastCalledWith({
+      blanks: { prep: 'au' },
+      blankReasonings: { prep: 'a + le' },
+    });
+  });
+
+  it('shows validation feedback for incorrect blank reasoning', () => {
+    const reasoningQuestion: FillInTheBlankQuestionData = {
+      ...question,
+      blanks: [
+        {
+          id: 'prep',
+          label: 'Preposition',
+          acceptedAnswers: ['au'],
+          reasoning: {
+            enabled: true,
+            required: true,
+            prompt: 'Raisonnement',
+            acceptedAnswers: ['a + le'],
+            validationMode: 'contains',
+            feedback: {
+              correct: 'Correct.',
+              incorrect: 'Mentionne la contraction.',
+            },
+          },
+        },
+      ],
+    };
+    const validation = validateQuestion(reasoningQuestion, {
+      blanks: { prep: 'au' },
+      blankReasonings: { prep: 'wrong' },
+    });
+
+    render(
+      <FillInTheBlankQuestion
+        answer={{ blanks: { prep: 'au' }, blankReasonings: { prep: 'wrong' } }}
+        onChange={() => undefined}
+        question={reasoningQuestion}
+        solutionTitle="Oplossing"
+        validation={validation}
+      />,
+    );
+
+    expect(screen.getByText('Mentionne la contraction.')).toBeInTheDocument();
+  });
 });

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ExerciseQuestion } from '../types/exercise';
 import {
+  isAnswerReady,
   matchesAcceptedAnswer,
   validateQuestion,
   validateReasoning,
@@ -87,5 +88,77 @@ describe('exerciseValidation', () => {
     );
 
     expect(result.isCorrect).toBe(true);
+  });
+
+  it('validates reasoning for individual blanks', () => {
+    const question: ExerciseQuestion = {
+      id: 'blank-reasoning',
+      type: 'fill-in-the-blank',
+      prompt: 'Ils etaient {hidden}.',
+      blanks: [
+        {
+          id: 'hidden',
+          acceptedAnswers: ['cachés'],
+          reasoning: {
+            enabled: true,
+            required: true,
+            prompt: 'Raisonnement',
+            acceptedAnswers: ['accord avec le sujet'],
+            validationMode: 'contains',
+          },
+        },
+      ],
+      feedback: {
+        correct: 'Correct.',
+        incorrect: 'Essaie encore.',
+        solution: 'Ils etaient cachés.',
+      },
+    };
+
+    expect(
+      validateQuestion(question, {
+        blanks: { hidden: 'cachés' },
+        blankReasonings: { hidden: 'accord avec le sujet etre' },
+      }).isCorrect,
+    ).toBe(true);
+
+    expect(
+      validateQuestion(question, {
+        blanks: { hidden: 'cachés' },
+        blankReasonings: { hidden: 'wrong' },
+      }).isCorrect,
+    ).toBe(false);
+  });
+
+  it('requires mandatory reasoning for individual blanks before submit', () => {
+    const question: ExerciseQuestion = {
+      id: 'blank-reasoning-ready',
+      type: 'fill-in-the-blank',
+      prompt: 'Sans etre {seen}.',
+      blanks: [
+        {
+          id: 'seen',
+          acceptedAnswers: ['vus'],
+          reasoning: {
+            enabled: true,
+            required: true,
+            prompt: 'Raisonnement',
+          },
+        },
+      ],
+      feedback: {
+        correct: 'Correct.',
+        incorrect: 'Essaie encore.',
+        solution: 'Sans etre vus.',
+      },
+    };
+
+    expect(isAnswerReady(question, { blanks: { seen: 'vus' } })).toBe(false);
+    expect(
+      isAnswerReady(question, {
+        blanks: { seen: 'vus' },
+        blankReasonings: { seen: 'infinitif avec le sujet ils' },
+      }),
+    ).toBe(true);
   });
 });

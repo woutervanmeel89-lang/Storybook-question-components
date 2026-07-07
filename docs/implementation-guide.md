@@ -228,6 +228,54 @@ Reasoning ondersteunt drie validatiemodi:
 - `contains`: de uitleg moet een accepted answer bevatten.
 - `custom`: gebruik `customValidator` voor eigen logica.
 
+Je kunt ook per invulveld een reasoning configureren. De gebruiker moet dan naast dat specifieke antwoord ook de redenering invullen:
+
+```ts
+const question = {
+  id: 'participe-passe',
+  type: 'fill-in-the-blank',
+  prompt:
+    'Ils etaient {hidden} dans un coin de la piece d ou ils pouvaient voir sans etre {seen}.',
+  blanks: [
+    {
+      id: 'hidden',
+      label: 'Participe passe 1',
+      acceptedAnswers: ['cachés'],
+      reasoning: {
+        enabled: true,
+        required: true,
+        prompt: 'Raisonnement pour cachés',
+        acceptedAnswers: ['accord avec le sujet', 'accord avec le sujet etre'],
+        validationMode: 'contains',
+      },
+    },
+    {
+      id: 'seen',
+      label: 'Participe passe 2',
+      acceptedAnswers: ['vus'],
+      reasoning: {
+        enabled: true,
+        required: true,
+        prompt: 'Raisonnement pour vus',
+        acceptedAnswers: [
+          "l'infinitif prend le sujet du verbe principal",
+          'ils',
+        ],
+        validationMode: 'contains',
+      },
+    },
+  ],
+  feedback: {
+    correct: 'Correct.',
+    incorrect: 'Controle les participes passes et leurs accords.',
+    solution:
+      'Ils etaient cachés dans un coin de la piece d ou ils pouvaient voir sans etre vus.',
+  },
+} satisfies ExerciseQuestion;
+```
+
+In een eigen flow worden deze antwoorden opgeslagen in `answer.blankReasonings`, met dezelfde keys als de blank ids.
+
 ## 7. Maak content robuust
 
 Aanbevolen afspraken voor implementatie:

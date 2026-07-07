@@ -7,7 +7,7 @@ React component library voor interactieve oefenvragen. Het project bevat herbrui
 - `QuestionPager`: complete oefenflow met voortgang, controle, feedback en herhaalronde voor foute antwoorden.
 - `ShortAnswerQuestion`: open vraag met een tekstantwoord.
 - `FillInTheBlankQuestion`: invulvraag met inline placeholders zoals `{preposition}`.
-- `ReasoningField`: optioneel uitlegveld bij een vraag.
+- `ReasoningField`: optioneel uitlegveld bij een vraag of bij een specifiek invulveld.
 - `FeedbackBox`: feedback met correct/incorrect tekst, oplossing en uitleg.
 - Validatiehelpers: `validateQuestion`, `isAnswerReady`, `matchesAcceptedAnswer` en `normalizeAnswer`.
 

@@ -165,11 +165,14 @@ type FillInTheBlankQuestionData = {
     label?: string;
     acceptedAnswers: string[];
     caseSensitive?: boolean;
+    reasoning?: ReasoningConfig;
   }>;
   feedback: QuestionFeedback;
   reasoning?: ReasoningConfig;
 };
 ```
+
+Een `reasoning` op een blank toont en valideert een extra uitlegveld voor dat specifieke invulveld.
 
 ### ExerciseAnswer
 
@@ -177,11 +180,12 @@ type FillInTheBlankQuestionData = {
 type ExerciseAnswer = {
   shortAnswer?: string;
   blanks?: Record<string, string>;
+  blankReasonings?: Record<string, string>;
   reasoning?: string;
 };
 ```
 
-Voor `short-answer` gebruik je `shortAnswer`. Voor `fill-in-the-blank` gebruik je `blanks`, met de blank id als key.
+Voor `short-answer` gebruik je `shortAnswer`. Voor `fill-in-the-blank` gebruik je `blanks`, met de blank id als key. Gebruik `blankReasonings` voor uitlegvelden die aan een specifieke blank gekoppeld zijn.
 
 ### QuestionFeedback
 
@@ -232,6 +236,11 @@ type QuestionValidationResult = {
     isCorrect: boolean;
     message?: string;
   };
+  blankReasonings: Record<string, {
+    enabled: boolean;
+    isCorrect: boolean;
+    message?: string;
+  }>;
   fields: Record<string, {
     isCorrect: boolean;
     message?: string;

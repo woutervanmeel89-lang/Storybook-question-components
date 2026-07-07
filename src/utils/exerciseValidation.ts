@@ -108,6 +108,7 @@ export function validateQuestion(
   answer: ExerciseAnswer,
 ): QuestionValidationResult {
   const fields: Record<string, FieldValidationResult> = {};
+  const blankReasonings: Record<string, ReasoningValidationResult> = {};
 
   if (question.type === 'short-answer') {
     fields.shortAnswer = validateField(
@@ -124,16 +125,25 @@ export function validateQuestion(
         blank.acceptedAnswers,
         blank.caseSensitive,
       );
+
+      blankReasonings[blank.id] = validateReasoning(
+        blank.reasoning,
+        answer.blankReasonings?.[blank.id],
+      );
     });
   }
 
   const mainCorrect = Object.values(fields).every((field) => field.isCorrect);
   const reasoning = validateReasoning(question.reasoning, answer.reasoning);
+  const blankReasoningsCorrect = Object.values(blankReasonings).every(
+    (blankReasoning) => blankReasoning.isCorrect,
+  );
 
   return {
-    isCorrect: mainCorrect && reasoning.isCorrect,
+    isCorrect: mainCorrect && reasoning.isCorrect && blankReasoningsCorrect,
     mainCorrect,
     reasoning,
+    blankReasonings,
     fields,
   };
 }
@@ -152,5 +162,13 @@ export function isAnswerReady(question: ExerciseQuestion, answer: ExerciseAnswer
     return Boolean(answer.shortAnswer?.trim());
   }
 
-  return question.blanks.every((blank) => Boolean(answer.blanks?.[blank.id]?.trim()));
+  return question.blanks.every((blank) => {
+    const hasBlankAnswer = Boolean(answer.blanks?.[blank.id]?.trim());
+    const hasBlankReasoning =
+      !blank.reasoning?.enabled ||
+      !blank.reasoning.required ||
+      Boolean(answer.blankReasonings?.[blank.id]?.trim());
+
+    return hasBlankAnswer && hasBlankReasoning;
+  });
 }

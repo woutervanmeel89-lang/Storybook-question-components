@@ -9,5 +9,7 @@ export interface ReasoningFieldProps {
   onChange: (value: string) => void;
   className?: string;
   disabled?: boolean;
+  errorMessage?: string;
+  id?: string;
   validation?: ReasoningValidationResult;
 }

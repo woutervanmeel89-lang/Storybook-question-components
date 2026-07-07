@@ -37,6 +37,7 @@ export type FillInBlank = {
   label?: string;
   acceptedAnswers: string[];
   caseSensitive?: boolean;
+  reasoning?: ReasoningConfig;
 };
 
 export type FillInTheBlankQuestionData = BaseQuestion & {
@@ -57,6 +58,7 @@ export type ExerciseQuestion =
 export type ExerciseAnswer = {
   shortAnswer?: string;
   blanks?: Record<string, string>;
+  blankReasonings?: Record<string, string>;
   reasoning?: string;
 };
 
@@ -73,5 +75,6 @@ export type QuestionValidationResult = {
   isCorrect: boolean;
   mainCorrect: boolean;
   reasoning: ReasoningValidationResult;
+  blankReasonings: Record<string, ReasoningValidationResult>;
   fields: Record<string, FieldValidationResult>;
 };

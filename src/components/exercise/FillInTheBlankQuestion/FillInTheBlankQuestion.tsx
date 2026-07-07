@@ -61,6 +61,9 @@ export function FillInTheBlankQuestion({
       .map((part) => part.blankId),
   );
   const hasInlineBlanks = renderedInlineBlankIds.size > 0;
+  const hasInlineBlankReasonings = question.blanks.some(
+    (blank) => renderedInlineBlankIds.has(blank.id) && blank.reasoning?.enabled,
+  );
 
   function updateBlank(blankId: string, value: string) {
     onChange({
@@ -70,6 +73,35 @@ export function FillInTheBlankQuestion({
         [blankId]: value,
       },
     });
+  }
+
+  function updateBlankReasoning(blankId: string, value: string) {
+    onChange({
+      ...answer,
+      blankReasonings: {
+        ...answer.blankReasonings,
+        [blankId]: value,
+      },
+    });
+  }
+
+  function getBlankReasoningField(blank: (typeof question.blanks)[number]) {
+    if (!blank.reasoning?.enabled) {
+      return null;
+    }
+
+    return (
+      <ReasoningField
+        disabled={disabled}
+        errorMessage={blank.reasoning.feedback?.incorrect}
+        id={`${question.id}-${blank.id}-reasoning`}
+        key={`${blank.id}-reasoning`}
+        onChange={(reasoning) => updateBlankReasoning(blank.id, reasoning)}
+        reasoning={blank.reasoning}
+        validation={validation?.blankReasonings[blank.id]}
+        value={answer.blankReasonings?.[blank.id] ?? ''}
+      />
+    );
   }
 
   function getBlankSolutionMessage(blank: (typeof question.blanks)[number]) {
@@ -148,19 +180,29 @@ export function FillInTheBlankQuestion({
         </div>
       ) : null}
 
+      {hasInlineBlankReasonings ? (
+        <div className={styles.blankReasonings}>
+          {question.blanks
+            .filter((blank) => renderedInlineBlankIds.has(blank.id))
+            .map((blank) => getBlankReasoningField(blank))}
+        </div>
+      ) : null}
+
       <div className={styles.blanks}>
         {question.blanks
           .filter((blank) => !renderedInlineBlankIds.has(blank.id))
           .map((blank, index) => (
-            <TextInput
-              disabled={disabled}
-              errorMessage={getBlankSolutionMessage(blank)}
-              key={blank.id}
-              label={blank.label ?? `Reponse ${index + 1}`}
-              onChange={(value) => updateBlank(blank.id, value)}
-              placeholder="Complete"
-              value={answer.blanks?.[blank.id] ?? ''}
-            />
+            <div className={styles.blankGroup} key={blank.id}>
+              <TextInput
+                disabled={disabled}
+                errorMessage={getBlankSolutionMessage(blank)}
+                label={blank.label ?? `Reponse ${index + 1}`}
+                onChange={(value) => updateBlank(blank.id, value)}
+                placeholder="Complete"
+                value={answer.blanks?.[blank.id] ?? ''}
+              />
+              {getBlankReasoningField(blank)}
+            </div>
           ))}
       </div>
 

@@ -5,6 +5,8 @@ import type { ReasoningFieldProps } from './component.types';
 export function ReasoningField({
   className,
   disabled,
+  errorMessage,
+  id,
   onChange,
   reasoning,
   validation,
@@ -19,7 +21,12 @@ export function ReasoningField({
   return (
     <div className={classes}>
       <TextInput
-        errorMessage={validation?.isCorrect === false ? validation.message : undefined}
+        errorMessage={
+          validation?.isCorrect === false
+            ? errorMessage ?? validation.message
+            : undefined
+        }
+        id={id}
         label={reasoning.prompt}
         onChange={onChange}
         placeholder="Écris ton explication"

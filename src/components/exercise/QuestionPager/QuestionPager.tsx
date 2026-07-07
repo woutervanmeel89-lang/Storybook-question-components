@@ -21,6 +21,11 @@ function emptyAnswer(question: ExerciseQuestion): ExerciseAnswer {
   if (question.type === 'fill-in-the-blank') {
     return {
       blanks: Object.fromEntries(question.blanks.map((blank) => [blank.id, ''])),
+      blankReasonings: Object.fromEntries(
+        question.blanks
+          .filter((blank) => blank.reasoning?.enabled)
+          .map((blank) => [blank.id, '']),
+      ),
     };
   }
 

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  blankReasoningQuestions,
   fillInTheBlankQuestions,
   mixedQuestions,
   reasoningQuestions,
@@ -66,6 +67,13 @@ export const WithReasoning: Story = {
   args: {
     ...labels,
     questions: reasoningQuestions,
+  },
+};
+
+export const WithReasoningPerBlank: Story = {
+  args: {
+    ...labels,
+    questions: blankReasoningQuestions,
   },
 };
 
