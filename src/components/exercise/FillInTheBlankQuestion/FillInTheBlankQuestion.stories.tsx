@@ -32,6 +32,7 @@ function FillInTheBlankQuestionExample({
       answer={answer}
       onChange={setAnswer}
       question={question}
+      solutionTitle="Oplossing"
     />
   );
 }

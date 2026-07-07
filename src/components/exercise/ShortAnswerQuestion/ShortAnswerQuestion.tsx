@@ -10,15 +10,23 @@ export function ShortAnswerQuestion({
   disabled,
   onChange,
   question,
+  solutionTitle,
   validation,
 }: ShortAnswerQuestionProps) {
   const classes = [styles.question, className].filter(Boolean).join(' ');
+  const fieldValidation = validation?.fields.shortAnswer;
+  const solutionMessage =
+    fieldValidation?.isCorrect === false ? (
+      <>
+        {solutionTitle}: <strong>{question.acceptedAnswers.join(' / ')}</strong>
+      </>
+    ) : undefined;
 
   return (
     <div className={classes}>
       <QuestionTypography eyebrow="Question">{question.prompt}</QuestionTypography>
       <TextInput
-        errorMessage={validation?.fields.shortAnswer?.message}
+        errorMessage={solutionMessage}
         label="Réponse"
         onChange={(shortAnswer) => onChange({ ...answer, shortAnswer })}
         placeholder="Écris ta réponse"

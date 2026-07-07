@@ -29,9 +29,32 @@ const questions: ExerciseQuestion[] = [
   },
 ];
 
+const labels = {
+  buttonLabels: {
+    check: 'Verifiëren',
+    close: 'Afsluiten',
+    next: 'Verdergaan',
+  },
+  completionMessage: 'Alle vragen zijn juist beantwoord.',
+  completionTitle: 'Klaar',
+  emptyMessage: 'Er zijn geen oefeningen om te tonen.',
+  emptyTitle: 'Geen vragen',
+  feedbackCorrectTitle: 'Juist',
+  feedbackIncorrectTitle: 'Nog niet juist',
+  feedbackSolutionTitle: 'Oplossing',
+  reasoningLabels: {
+    acceptedAnswersTitle: 'Geaccepteerde antwoorden',
+    correctFallback: 'De uitleg is juist.',
+    feedbackTitle: 'Extra uitleg',
+    incorrectFallback: 'De uitleg is nog niet juist.',
+    solutionTitle: 'Voorbeeld',
+  },
+  repeatRoundLabel: 'Herhaalronde',
+};
+
 describe('QuestionPager', () => {
   it('shows the first question', () => {
-    render(<QuestionPager questions={questions} />);
+    render(<QuestionPager {...labels} questions={questions} />);
 
     expect(
       screen.getByText("Quelle est la traduction de 'ik ga' en français ?"),
@@ -40,10 +63,10 @@ describe('QuestionPager', () => {
 
   it('shows feedback after submit', async () => {
     const user = userEvent.setup();
-    render(<QuestionPager questions={questions} />);
+    render(<QuestionPager {...labels} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'je vais');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
     expect(screen.getByText('Très bien.')).toBeInTheDocument();
   });
@@ -52,6 +75,7 @@ describe('QuestionPager', () => {
     const user = userEvent.setup();
     render(
       <QuestionPager
+        {...labels}
         questions={[
           {
             ...questions[0],
@@ -62,7 +86,7 @@ describe('QuestionPager', () => {
     );
 
     await user.type(screen.getByRole('textbox'), 'wrong');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
     expect(screen.getByText("je vais / j'y vais")).toBeInTheDocument();
   });
@@ -71,6 +95,7 @@ describe('QuestionPager', () => {
     const user = userEvent.setup();
     render(
       <QuestionPager
+        {...labels}
         questions={[
           {
             id: 'blank-question',
@@ -92,9 +117,10 @@ describe('QuestionPager', () => {
 
     await user.type(screen.getByLabelText('Verbe'), 'allons');
     await user.type(screen.getByLabelText('Preposition'), 'au');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
-    expect(screen.getByText('Preposition: a la')).toBeInTheDocument();
+    expect(screen.getByText('Oplossing:')).toBeInTheDocument();
+    expect(screen.getByText('a la')).toBeInTheDocument();
     expect(screen.queryByText('Verbe: allons')).not.toBeInTheDocument();
   });
 
@@ -102,6 +128,7 @@ describe('QuestionPager', () => {
     const user = userEvent.setup();
     render(
       <QuestionPager
+        {...labels}
         questions={[
           {
             id: 'reasoning-question',
@@ -134,7 +161,7 @@ describe('QuestionPager', () => {
 
     await user.type(screen.getByLabelText('Preposition'), 'au');
     await user.type(screen.getByLabelText('Explain why.'), 'wrong');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
     expect(screen.getByText('Geaccepteerde antwoorden')).toBeInTheDocument();
     expect(screen.getByText('a + le')).toBeInTheDocument();
@@ -145,26 +172,26 @@ describe('QuestionPager', () => {
 
   it('goes to the next question after feedback', async () => {
     const user = userEvent.setup();
-    render(<QuestionPager questions={questions} />);
+    render(<QuestionPager {...labels} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'je vais');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
-    await user.click(screen.getByRole('button', { name: 'Volgende' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
+    await user.click(screen.getByRole('button', { name: 'Verdergaan' }));
 
     expect(screen.getByText('Complète la phrase : Je vais ___ marché.')).toBeInTheDocument();
   });
 
   it('repeats incorrect questions at the end', async () => {
     const user = userEvent.setup();
-    render(<QuestionPager questions={questions} />);
+    render(<QuestionPager {...labels} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'wrong');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
     expect(screen.getByText('Regarde encore le verbe aller.')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Volgende' }));
+    await user.click(screen.getByRole('button', { name: 'Verdergaan' }));
     await user.type(screen.getByLabelText('Préposition'), 'au');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
     await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
 
     expect(screen.getByText('Herhaalronde')).toBeInTheDocument();
@@ -175,13 +202,13 @@ describe('QuestionPager', () => {
 
   it('finishes when all questions are correct', async () => {
     const user = userEvent.setup();
-    render(<QuestionPager questions={questions} />);
+    render(<QuestionPager {...labels} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'je vais');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
-    await user.click(screen.getByRole('button', { name: 'Volgende' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
+    await user.click(screen.getByRole('button', { name: 'Verdergaan' }));
     await user.type(screen.getByLabelText('Préposition'), 'au');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
     await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
 
     expect(screen.getByText('Klaar')).toBeInTheDocument();
@@ -191,10 +218,10 @@ describe('QuestionPager', () => {
   it('calls onClose when the final question is completed without retries', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
-    render(<QuestionPager onClose={onClose} questions={[questions[0]]} />);
+    render(<QuestionPager {...labels} onClose={onClose} questions={[questions[0]]} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'je vais');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
     await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -203,13 +230,13 @@ describe('QuestionPager', () => {
   it('does not call onClose when closing starts a retry round', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
-    render(<QuestionPager onClose={onClose} questions={questions} />);
+    render(<QuestionPager {...labels} onClose={onClose} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'wrong');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
-    await user.click(screen.getByRole('button', { name: 'Volgende' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
+    await user.click(screen.getByRole('button', { name: 'Verdergaan' }));
     await user.type(screen.getByLabelText('Préposition'), 'au');
-    await user.click(screen.getByRole('button', { name: 'Controleren' }));
+    await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
     await user.click(screen.getByRole('button', { name: 'Afsluiten' }));
 
     expect(onClose).not.toHaveBeenCalled();

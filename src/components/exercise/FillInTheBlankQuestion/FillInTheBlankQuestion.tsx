@@ -49,6 +49,7 @@ export function FillInTheBlankQuestion({
   disabled,
   onChange,
   question,
+  solutionTitle,
   validation,
 }: FillInTheBlankQuestionProps) {
   const classes = [styles.question, className].filter(Boolean).join(' ');
@@ -71,6 +72,14 @@ export function FillInTheBlankQuestion({
     });
   }
 
+  function getBlankSolutionMessage(blank: (typeof question.blanks)[number]) {
+    return validation?.fields[blank.id]?.isCorrect === false ? (
+      <>
+        {solutionTitle}: <strong>{blank.acceptedAnswers.join(' / ')}</strong>
+      </>
+    ) : undefined;
+  }
+
   return (
     <div className={classes}>
       <QuestionTypography eyebrow="Exercice a trous">
@@ -91,6 +100,7 @@ export function FillInTheBlankQuestion({
 
               const inputId = `${question.id}-${blank.id}`;
               const errorId = `${inputId}-error`;
+              const solutionMessage = getBlankSolutionMessage(blank);
 
               return (
                 <span className={styles.inlineBlank} key={blank.id}>
@@ -99,9 +109,9 @@ export function FillInTheBlankQuestion({
                   </label>
                   <input
                     aria-describedby={
-                      validation?.fields[blank.id]?.message ? errorId : undefined
+                      solutionMessage ? errorId : undefined
                     }
-                    aria-invalid={Boolean(validation?.fields[blank.id]?.message)}
+                    aria-invalid={Boolean(solutionMessage)}
                     className={styles.inlineInput}
                     disabled={disabled}
                     id={inputId}
@@ -121,18 +131,20 @@ export function FillInTheBlankQuestion({
         <div className={styles.inlineErrors}>
           {question.blanks
             .filter((blank) => renderedInlineBlankIds.has(blank.id))
-            .map((blank) =>
-              validation?.fields[blank.id]?.message ? (
+            .map((blank) => {
+              const solutionMessage = getBlankSolutionMessage(blank);
+
+              return solutionMessage ? (
                 <p
                   className={styles.error}
                   id={`${question.id}-${blank.id}-error`}
                   key={blank.id}
                   role="alert"
                 >
-                  {blank.label ?? blank.id}: {validation.fields[blank.id]?.message}
+                  {blank.label ?? blank.id}: {solutionMessage}
                 </p>
-              ) : null,
-            )}
+              ) : null;
+            })}
         </div>
       ) : null}
 
@@ -142,7 +154,7 @@ export function FillInTheBlankQuestion({
           .map((blank, index) => (
             <TextInput
               disabled={disabled}
-              errorMessage={validation?.fields[blank.id]?.message}
+              errorMessage={getBlankSolutionMessage(blank)}
               key={blank.id}
               label={blank.label ?? `Reponse ${index + 1}`}
               onChange={(value) => updateBlank(blank.id, value)}

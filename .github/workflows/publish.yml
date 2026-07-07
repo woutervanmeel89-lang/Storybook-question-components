@@ -1,6 +1,13 @@
 name: Publish package
 
 on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - package.json
+      - package-lock.json
   release:
     types: [published]
   workflow_dispatch:
@@ -50,6 +57,20 @@ jobs:
           overwrite_files: true
 
       - name: Publish to GitHub Packages
-        run: npm publish
+        run: |
+          set +e
+          npm publish 2>&1 | tee publish.log
+          publish_status=${PIPESTATUS[0]}
+
+          if [ "$publish_status" -eq 0 ]; then
+            exit 0
+          fi
+
+          if grep -q "Cannot publish over existing version" publish.log; then
+            echo "Package version already exists on GitHub Packages; keeping the release tarball upload."
+            exit 0
+          fi
+
+          exit "$publish_status"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

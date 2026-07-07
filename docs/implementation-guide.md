@@ -120,11 +120,19 @@ export function ExercisePage({ questions }: ExercisePageProps) {
   return (
     <QuestionPager
       questions={questions}
+      buttonLabels={{
+        check: 'Verifiëren',
+        close: 'Afsluiten',
+        next: 'Verdergaan',
+      }}
       completionTitle="Klaar"
       completionMessage="Alle vragen zijn juist beantwoord."
+      emptyTitle="Geen vragen"
+      emptyMessage="Er zijn geen oefeningen om te tonen."
       feedbackCorrectTitle="Juist"
       feedbackIncorrectTitle="Nog niet juist"
       feedbackSolutionTitle="Oplossing"
+      repeatRoundLabel="Herhaalronde"
     />
   );
 }
@@ -249,4 +257,3 @@ Controleer in Storybook minimaal:
 - een vraag met meerdere blanks;
 - een vraag met reasoning;
 - een volledig `QuestionPager` scenario met een fout antwoord en herhaalronde.
-

@@ -34,6 +34,7 @@ describe('ShortAnswerQuestion', () => {
             handleChange(nextAnswer);
           }}
           question={question}
+          solutionTitle="Oplossing"
         />
       );
     }
@@ -53,10 +54,12 @@ describe('ShortAnswerQuestion', () => {
         answer={{ shortAnswer: 'je suis' }}
         onChange={() => undefined}
         question={question}
+        solutionTitle="Oplossing"
         validation={validation}
       />,
     );
 
-    expect(screen.getByText('Dit antwoord is nog niet juist.')).toBeInTheDocument();
+    expect(screen.getByText('Oplossing:')).toBeInTheDocument();
+    expect(screen.getByText("je vais / j'y vais")).toBeInTheDocument();
   });
 });

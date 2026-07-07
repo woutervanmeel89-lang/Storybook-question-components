@@ -3,14 +3,17 @@ import type { FeedbackBoxProps } from './component.types';
 
 export function FeedbackBox({
   className,
-  correctTitle = 'Juist',
+  correctTitle,
   explanation,
-  incorrectTitle = 'Nog niet juist',
+  incorrectTitle,
   isCorrect,
   message,
+  reasoningAcceptedAnswersTitle,
   reasoningFeedback,
+  reasoningSolutionTitle,
+  reasoningTitle,
   solution,
-  solutionTitle = 'Oplossing',
+  solutionTitle,
 }: FeedbackBoxProps) {
   const classes = [
     styles.box,
@@ -26,7 +29,10 @@ export function FeedbackBox({
       <p className={styles.message}>{message}</p>
       {solution ? (
         <p className={styles.solution}>
-          <strong>{solutionTitle}:</strong> {solution}
+          <strong>{solutionTitle}:</strong>{' '}
+          <span className={!isCorrect ? styles.solutionAnswer : undefined}>
+            {solution}
+          </span>
         </p>
       ) : null}
       {explanation ? <p className={styles.explanation}>{explanation}</p> : null}
@@ -34,7 +40,11 @@ export function FeedbackBox({
         <div className={styles.reasoning}>
           {reasoningFeedback.acceptedAnswers?.length ? (
             <div className={styles.acceptedAnswers}>
-              <p className={styles.acceptedAnswersTitle}>Geaccepteerde antwoorden</p>
+              {reasoningAcceptedAnswersTitle ? (
+                <p className={styles.acceptedAnswersTitle}>
+                  {reasoningAcceptedAnswersTitle}
+                </p>
+              ) : null}
               <ul className={styles.acceptedAnswersList}>
                 {reasoningFeedback.acceptedAnswers.map((answer) => (
                   <li className={styles.acceptedAnswer} key={answer}>
@@ -45,12 +55,17 @@ export function FeedbackBox({
             </div>
           ) : null}
           <div className={styles.reasoningExplanation}>
-            <p className={styles.reasoningTitle}>Extra uitleg</p>
+            {reasoningTitle ? (
+              <p className={styles.reasoningTitle}>{reasoningTitle}</p>
+            ) : null}
             <p className={styles.message}>{reasoningFeedback.message}</p>
           </div>
-          {reasoningFeedback.solution ? (
+          {reasoningFeedback.solution && reasoningSolutionTitle ? (
             <p className={styles.solution}>
-              <strong>Voorbeeld:</strong> {reasoningFeedback.solution}
+              <strong>{reasoningSolutionTitle}:</strong>{' '}
+              <span className={styles.solutionAnswer}>
+                {reasoningFeedback.solution}
+              </span>
             </p>
           ) : null}
         </div>

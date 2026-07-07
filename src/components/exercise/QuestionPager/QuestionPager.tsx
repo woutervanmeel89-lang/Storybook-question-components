@@ -10,7 +10,10 @@ import { FillInTheBlankQuestion } from '../FillInTheBlankQuestion';
 import { NextButton } from '../NextButton';
 import { ShortAnswerQuestion } from '../ShortAnswerQuestion';
 import styles from './QuestionPager.module.scss';
-import type { QuestionPagerProps } from './component.types';
+import type {
+  QuestionPagerProps,
+  QuestionPagerReasoningLabels,
+} from './component.types';
 
 type AnswerState = Record<string, ExerciseAnswer>;
 
@@ -27,6 +30,7 @@ function emptyAnswer(question: ExerciseQuestion): ExerciseAnswer {
 function getReasoningFeedback(
   question: ExerciseQuestion,
   validation: QuestionValidationResult,
+  labels?: QuestionPagerReasoningLabels,
 ) {
   if (!question.reasoning?.enabled) {
     return undefined;
@@ -40,45 +44,26 @@ function getReasoningFeedback(
     acceptedAnswers: isCorrect ? undefined : question.reasoning.acceptedAnswers,
     message:
       (isCorrect ? feedback?.correct : feedback?.incorrect) ??
-      (isCorrect ? 'De uitleg is juist.' : 'De uitleg is nog niet juist.'),
+      (isCorrect ? labels?.correctFallback : labels?.incorrectFallback) ??
+      '',
     solution: feedback?.solution,
   };
 }
 
-function formatAcceptedAnswers(acceptedAnswers: string[]) {
-  return acceptedAnswers.join(' / ');
-}
-
-function getFeedbackSolution(
-  question: ExerciseQuestion,
-  validation: QuestionValidationResult,
-) {
-  if (validation.mainCorrect) {
-    return undefined;
-  }
-
-  if (question.type === 'short-answer') {
-    return formatAcceptedAnswers(question.acceptedAnswers);
-  }
-
-  return question.blanks
-    .filter((blank) => !validation.fields[blank.id]?.isCorrect)
-    .map((blank) => {
-      const label = blank.label ?? blank.id;
-      return `${label}: ${formatAcceptedAnswers(blank.acceptedAnswers)}`;
-    })
-    .join('; ');
-}
-
 export function QuestionPager({
+  buttonLabels,
   className,
-  completionMessage = 'Alle vragen zijn juist beantwoord.',
-  completionTitle = 'Klaar',
-  feedbackCorrectTitle = 'Juist',
-  feedbackIncorrectTitle = 'Nog niet juist',
-  feedbackSolutionTitle = 'Oplossing',
+  completionMessage,
+  completionTitle,
+  emptyMessage,
+  emptyTitle,
+  feedbackCorrectTitle,
+  feedbackIncorrectTitle,
+  feedbackSolutionTitle,
   onClose,
   questions,
+  reasoningLabels,
+  repeatRoundLabel,
 }: QuestionPagerProps) {
   const [roundQuestions, setRoundQuestions] = useState<ExerciseQuestion[]>(questions);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -113,8 +98,8 @@ export function QuestionPager({
     return (
       <section className={[styles.pager, className].filter(Boolean).join(' ')}>
         <div className={styles.completion} role="status">
-          <h2>Geen vragen</h2>
-          <p>Er zijn geen oefeningen om te tonen.</p>
+          <h2>{emptyTitle}</h2>
+          <p>{emptyMessage}</p>
         </div>
       </section>
     );
@@ -123,9 +108,9 @@ export function QuestionPager({
   const isLastQuestion = currentIndex === roundQuestions.length - 1;
   const buttonLabel = showFeedback
     ? isLastQuestion
-      ? 'Afsluiten'
-      : 'Volgende'
-    : 'Controleren';
+      ? buttonLabels.close
+      : buttonLabels.next
+    : buttonLabels.check;
 
   function updateAnswer(answer: ExerciseAnswer) {
     setAnswers((currentAnswers) => ({
@@ -190,15 +175,12 @@ export function QuestionPager({
   const feedbackMessage = validation?.isCorrect
     ? currentQuestion.feedback.correct
     : currentQuestion.feedback.incorrect;
-  const feedbackSolution = validation
-    ? getFeedbackSolution(currentQuestion, validation)
-    : undefined;
 
   return (
     <section className={[styles.pager, className].filter(Boolean).join(' ')}>
       <header className={styles.header}>
         <p className={styles.progress}>{progressText}</p>
-        {isRepeatRound ? <p className={styles.repeat}>Herhaalronde</p> : null}
+        {isRepeatRound ? <p className={styles.repeat}>{repeatRoundLabel}</p> : null}
       </header>
 
       <div className={styles.body}>
@@ -208,6 +190,7 @@ export function QuestionPager({
             disabled={showFeedback}
             onChange={updateAnswer}
             question={currentQuestion}
+            solutionTitle={feedbackSolutionTitle}
             validation={showFeedback ? validation : undefined}
           />
         ) : (
@@ -216,6 +199,7 @@ export function QuestionPager({
             disabled={showFeedback}
             onChange={updateAnswer}
             question={currentQuestion}
+            solutionTitle={feedbackSolutionTitle}
             validation={showFeedback ? validation : undefined}
           />
         )}
@@ -227,8 +211,14 @@ export function QuestionPager({
             incorrectTitle={feedbackIncorrectTitle}
             isCorrect={validation.isCorrect}
             message={feedbackMessage}
-            reasoningFeedback={getReasoningFeedback(currentQuestion, validation)}
-            solution={feedbackSolution}
+            reasoningAcceptedAnswersTitle={reasoningLabels?.acceptedAnswersTitle}
+            reasoningFeedback={getReasoningFeedback(
+              currentQuestion,
+              validation,
+              reasoningLabels,
+            )}
+            reasoningSolutionTitle={reasoningLabels?.solutionTitle}
+            reasoningTitle={reasoningLabels?.feedbackTitle}
             solutionTitle={feedbackSolutionTitle}
           />
         ) : null}

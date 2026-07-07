@@ -8,11 +8,14 @@ export interface FeedbackBoxReasoningFeedback {
 export interface FeedbackBoxProps {
   isCorrect: boolean;
   message: string;
+  correctTitle: string;
+  incorrectTitle: string;
+  solutionTitle: string;
   solution?: string;
   className?: string;
-  correctTitle?: string;
   explanation?: string;
-  incorrectTitle?: string;
-  solutionTitle?: string;
+  reasoningAcceptedAnswersTitle?: string;
   reasoningFeedback?: FeedbackBoxReasoningFeedback;
+  reasoningSolutionTitle?: string;
+  reasoningTitle?: string;
 }

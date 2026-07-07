@@ -1,2 +1,6 @@
 export { QuestionPager } from './QuestionPager';
-export type { QuestionPagerProps } from './component.types';
+export type {
+  QuestionPagerButtonLabels,
+  QuestionPagerProps,
+  QuestionPagerReasoningLabels,
+} from './component.types';

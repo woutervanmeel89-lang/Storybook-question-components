@@ -9,17 +9,37 @@ Deze pagina vat de publieke API samen die via `src/index.ts` wordt geexporteerd.
 Complete oefenflow voor een lijst vragen.
 
 ```tsx
-<QuestionPager questions={questions} />
+<QuestionPager
+  questions={questions}
+  buttonLabels={{
+    check: 'Verifiëren',
+    close: 'Afsluiten',
+    next: 'Verdergaan',
+  }}
+  completionTitle="Klaar"
+  completionMessage="Alle vragen zijn juist beantwoord."
+  emptyTitle="Geen vragen"
+  emptyMessage="Er zijn geen oefeningen om te tonen."
+  feedbackCorrectTitle="Juist"
+  feedbackIncorrectTitle="Nog niet juist"
+  feedbackSolutionTitle="Oplossing"
+  repeatRoundLabel="Herhaalronde"
+/>
 ```
 
 Belangrijkste props:
 
 - `questions`: lijst met `ExerciseQuestion`.
+- `buttonLabels`: labels voor controleren, verdergaan en afsluiten.
 - `completionTitle`: titel wanneer alle vragen correct zijn beantwoord.
 - `completionMessage`: bericht wanneer alle vragen correct zijn beantwoord.
+- `emptyTitle`: titel wanneer er geen vragen zijn.
+- `emptyMessage`: bericht wanneer er geen vragen zijn.
 - `feedbackCorrectTitle`: titel boven correcte feedback.
 - `feedbackIncorrectTitle`: titel boven incorrecte feedback.
 - `feedbackSolutionTitle`: titel boven de oplossing.
+- `repeatRoundLabel`: label voor de herhaalronde.
+- `reasoningLabels`: optionele labels en fallbackteksten voor reasoning-feedback.
 - `onClose`: optionele callback wanneer de gebruiker de flow afsluit nadat alle vragen juist zijn beantwoord.
 - `className`: extra CSS class.
 
@@ -85,7 +105,10 @@ Feedbackweergave voor een gecontroleerd antwoord.
 <FeedbackBox
   isCorrect={validation.isCorrect}
   message={message}
+  correctTitle="Juist"
+  incorrectTitle="Nog niet juist"
   solution={question.feedback.solution}
+  solutionTitle="Oplossing"
 />
 ```
 
@@ -96,7 +119,8 @@ Props:
 - `solution`: oplossing.
 - `explanation`: optionele extra uitleg.
 - `reasoningFeedback`: feedback voor het reasoning veld.
-- `correctTitle`, `incorrectTitle`, `solutionTitle`: labels overschrijven.
+- `correctTitle`, `incorrectTitle`, `solutionTitle`: verplichte labels.
+- `reasoningAcceptedAnswersTitle`, `reasoningTitle`, `reasoningSolutionTitle`: optionele labels voor reasoning-feedback.
 - `className`: extra CSS class.
 
 ### Overige bouwstenen

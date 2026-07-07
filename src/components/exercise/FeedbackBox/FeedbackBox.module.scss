@@ -39,11 +39,16 @@
 }
 
 .solution {
-  border: 1px solid rgba(37, 99, 235, 0.3);
+  border: 1px solid #f0a29a;
   border-radius: 0.5rem;
-  background: #eff6ff;
+  background: rgba(255, 255, 255, 0.62);
   padding: 0.75rem;
   font-size: 1.05rem;
+}
+
+.solutionAnswer {
+  color: #c24135;
+  font-weight: 800;
 }
 
 .reasoning {

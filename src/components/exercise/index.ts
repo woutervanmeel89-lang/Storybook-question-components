@@ -8,7 +8,11 @@ export type { FillInTheBlankQuestionProps } from './FillInTheBlankQuestion';
 export { NextButton } from './NextButton';
 export type { NextButtonProps } from './NextButton';
 export { QuestionPager } from './QuestionPager';
-export type { QuestionPagerProps } from './QuestionPager';
+export type {
+  QuestionPagerButtonLabels,
+  QuestionPagerProps,
+  QuestionPagerReasoningLabels,
+} from './QuestionPager';
 export { QuestionTypography } from './QuestionTypography';
 export type { QuestionTypographyProps } from './QuestionTypography';
 export { ReasoningField } from './ReasoningField';

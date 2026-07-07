@@ -76,7 +76,24 @@ const questions: ExerciseQuestion[] = [
 ];
 
 export function Exercise() {
-  return <QuestionPager questions={questions} />;
+  return (
+    <QuestionPager
+      questions={questions}
+      buttonLabels={{
+        check: 'Verifiëren',
+        close: 'Afsluiten',
+        next: 'Verdergaan',
+      }}
+      completionTitle="Klaar"
+      completionMessage="Alle vragen zijn juist beantwoord."
+      emptyTitle="Geen vragen"
+      emptyMessage="Er zijn geen oefeningen om te tonen."
+      feedbackCorrectTitle="Juist"
+      feedbackIncorrectTitle="Nog niet juist"
+      feedbackSolutionTitle="Oplossing"
+      repeatRoundLabel="Herhaalronde"
+    />
+  );
 }
 ```
 
@@ -87,7 +104,17 @@ export function Exercise() {
 
 ## Publiceren naar GitHub Packages
 
-Maak in GitHub een nieuwe release aan, of start de workflow `Publish package` handmatig via Actions. De workflow test, bouwt en publiceert daarna deze package naar GitHub Packages met `GITHUB_TOKEN`.
+Verhoog de versie in `package.json` en `package-lock.json`, bijvoorbeeld:
+
+```bash
+npm version patch
+```
+
+Push daarna naar `main` of `master`. De workflow `Publish package` draait automatisch wanneer `package.json` of `package-lock.json` wijzigt. De workflow test, bouwt en publiceert daarna deze package naar GitHub Packages met `GITHUB_TOKEN`.
+
+Als dezelfde packageversie al bestaat, blijft de workflow groen en wordt er niets overschreven. Wil je een nieuwe installbare versie, verhoog dan altijd eerst de npm-versie.
+
+Je kunt de workflow ook nog handmatig starten via Actions, of door een GitHub release te maken.
 
 Bij een GitHub release uploadt de workflow ook een `.tgz` bestand als release asset. Dat bestand kan direct geinstalleerd worden vanuit een ander project, bijvoorbeeld:
 
