@@ -64,8 +64,6 @@ describe('exerciseValidation', () => {
   it('validates required reasoning separately', () => {
     const result = validateReasoning(
       {
-        enabled: true,
-        required: true,
         prompt: 'Explique pourquoi.',
         acceptedAnswers: ['à + le'],
       },
@@ -78,8 +76,6 @@ describe('exerciseValidation', () => {
   it('supports contains matching for reasoning', () => {
     const result = validateReasoning(
       {
-        enabled: true,
-        required: true,
         prompt: 'Explique pourquoi.',
         acceptedAnswers: ['à + le'],
         validationMode: 'contains',
@@ -100,8 +96,6 @@ describe('exerciseValidation', () => {
           id: 'hidden',
           acceptedAnswers: ['cachés'],
           reasoning: {
-            enabled: true,
-            required: true,
             prompt: 'Raisonnement',
             acceptedAnswers: ['accord avec le sujet'],
             validationMode: 'contains',
@@ -140,9 +134,8 @@ describe('exerciseValidation', () => {
           id: 'seen',
           acceptedAnswers: ['vus'],
           reasoning: {
-            enabled: true,
-            required: true,
             prompt: 'Raisonnement',
+            acceptedAnswers: ['infinitif avec le sujet ils'],
           },
         },
       ],

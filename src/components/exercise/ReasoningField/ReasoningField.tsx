@@ -5,26 +5,20 @@ import type { ReasoningFieldProps } from './component.types';
 export function ReasoningField({
   className,
   disabled,
-  errorMessage,
   id,
   onChange,
   reasoning,
   validation,
   value,
 }: ReasoningFieldProps) {
-  if (!reasoning.enabled) {
-    return null;
-  }
-
   const classes = [styles.wrapper, className].filter(Boolean).join(' ');
+  const solutionMessage = <strong>{reasoning.acceptedAnswers.join(' / ')}</strong>;
 
   return (
     <div className={classes}>
       <TextInput
         errorMessage={
-          validation?.isCorrect === false
-            ? errorMessage ?? validation.message
-            : undefined
+          validation?.isCorrect === false ? solutionMessage : undefined
         }
         id={id}
         label={reasoning.prompt}

@@ -8,7 +8,6 @@ export interface FillInTheBlankQuestionProps {
   question: FillInTheBlankQuestionData;
   answer: ExerciseAnswer;
   onChange: (answer: ExerciseAnswer) => void;
-  solutionTitle: string;
   className?: string;
   disabled?: boolean;
   validation?: QuestionValidationResult;

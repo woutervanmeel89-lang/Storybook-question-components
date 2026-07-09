@@ -22,7 +22,6 @@ function ShortAnswerQuestionExample() {
       answer={answer}
       onChange={setAnswer}
       question={shortAnswerQuestions[0]}
-      solutionTitle="Oplossing"
     />
   );
 }

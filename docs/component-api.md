@@ -20,9 +20,6 @@ Complete oefenflow voor een lijst vragen.
   completionMessage="Alle vragen zijn juist beantwoord."
   emptyTitle="Geen vragen"
   emptyMessage="Er zijn geen oefeningen om te tonen."
-  feedbackCorrectTitle="Juist"
-  feedbackIncorrectTitle="Nog niet juist"
-  feedbackSolutionTitle="Oplossing"
   repeatRoundLabel="Herhaalronde"
 />
 ```
@@ -35,11 +32,7 @@ Belangrijkste props:
 - `completionMessage`: bericht wanneer alle vragen correct zijn beantwoord.
 - `emptyTitle`: titel wanneer er geen vragen zijn.
 - `emptyMessage`: bericht wanneer er geen vragen zijn.
-- `feedbackCorrectTitle`: titel boven correcte feedback.
-- `feedbackIncorrectTitle`: titel boven incorrecte feedback.
-- `feedbackSolutionTitle`: titel boven de oplossing.
 - `repeatRoundLabel`: label voor de herhaalronde.
-- `reasoningLabels`: optionele labels en fallbackteksten voor reasoning-feedback.
 - `onClose`: optionele callback wanneer de gebruiker de flow afsluit nadat alle vragen juist zijn beantwoord.
 - `className`: extra CSS class.
 
@@ -97,36 +90,10 @@ Props:
 
 Prompt placeholders zoals `{preposition}` worden inline inputs wanneer er een blank met hetzelfde id bestaat.
 
-### FeedbackBox
-
-Feedbackweergave voor een gecontroleerd antwoord.
-
-```tsx
-<FeedbackBox
-  isCorrect={validation.isCorrect}
-  message={message}
-  correctTitle="Juist"
-  incorrectTitle="Nog niet juist"
-  solution={question.feedback.solution}
-  solutionTitle="Oplossing"
-/>
-```
-
-Props:
-
-- `isCorrect`: bepaalt correcte of incorrecte styling.
-- `message`: feedbacktekst.
-- `solution`: oplossing.
-- `explanation`: optionele extra uitleg.
-- `reasoningFeedback`: feedback voor het reasoning veld.
-- `correctTitle`, `incorrectTitle`, `solutionTitle`: verplichte labels.
-- `reasoningAcceptedAnswersTitle`, `reasoningTitle`, `reasoningSolutionTitle`: optionele labels voor reasoning-feedback.
-- `className`: extra CSS class.
-
 ### Overige bouwstenen
 
 - `TextInput`: basisinvoer met label en foutmelding.
-- `ReasoningField`: uitlegveld voor vragen met `reasoning.enabled`.
+- `ReasoningField`: uitlegveld voor vragen met `reasoning`.
 - `NextButton`: knopcomponent voor pager-acties.
 - `QuestionTypography`: typografiecomponent voor vraagtekst.
 
@@ -202,20 +169,15 @@ type QuestionFeedback = {
 
 ```ts
 type ReasoningConfig = {
-  enabled: boolean;
-  required?: boolean;
   prompt: string;
-  acceptedAnswers?: string[];
+  acceptedAnswers: string[];
   validationMode?: 'contains' | 'exact' | 'custom';
   caseSensitive?: boolean;
   customValidator?: (answer: string) => boolean;
-  feedback?: {
-    correct: string;
-    incorrect: string;
-    solution?: string;
-  };
 };
 ```
+
+Als `reasoning` aanwezig is, wordt het uitlegveld getoond en moet het ingevuld en gevalideerd worden. Als `reasoning` ontbreekt, wordt er niets getoond.
 
 ## Validatiehelpers
 

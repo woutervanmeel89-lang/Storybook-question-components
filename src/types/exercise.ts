@@ -3,18 +3,11 @@ export type QuestionType = 'fill-in-the-blank' | 'short-answer';
 export type ReasoningValidationMode = 'contains' | 'exact' | 'custom';
 
 export type ReasoningConfig = {
-  enabled: boolean;
-  required?: boolean;
   prompt: string;
-  acceptedAnswers?: string[];
+  acceptedAnswers: string[];
   validationMode?: ReasoningValidationMode;
   caseSensitive?: boolean;
   customValidator?: (answer: string) => boolean;
-  feedback?: {
-    correct: string;
-    incorrect: string;
-    solution?: string;
-  };
 };
 
 export type QuestionFeedback = {

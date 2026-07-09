@@ -40,23 +40,17 @@ export function validateReasoning(
   reasoning: ReasoningConfig | undefined,
   answer = '',
 ): ReasoningValidationResult {
-  if (!reasoning?.enabled) {
+  if (!reasoning) {
     return { enabled: false, isCorrect: true };
   }
 
   const trimmedAnswer = answer.trim();
-  const hasAcceptedAnswers = Boolean(reasoning.acceptedAnswers?.length);
 
-  if (reasoning.required && !trimmedAnswer) {
+  if (!trimmedAnswer) {
     return {
       enabled: true,
       isCorrect: false,
-      message: 'Vul ook je uitleg in.',
     };
-  }
-
-  if (!hasAcceptedAnswers && !reasoning.required && !trimmedAnswer) {
-    return { enabled: true, isCorrect: true };
   }
 
   if (reasoning.validationMode === 'custom') {
@@ -64,28 +58,18 @@ export function validateReasoning(
     return {
       enabled: true,
       isCorrect,
-      message: isCorrect ? undefined : 'De uitleg is nog niet juist.',
     };
   }
 
-  if (hasAcceptedAnswers) {
-    const isCorrect = matchesAcceptedAnswer(
-      trimmedAnswer,
-      reasoning.acceptedAnswers ?? [],
-      {
-        caseSensitive: reasoning.caseSensitive,
-        mode: reasoning.validationMode === 'contains' ? 'contains' : 'exact',
-      },
-    );
+  const isCorrect = matchesAcceptedAnswer(trimmedAnswer, reasoning.acceptedAnswers, {
+    caseSensitive: reasoning.caseSensitive,
+    mode: reasoning.validationMode === 'contains' ? 'contains' : 'exact',
+  });
 
-    return {
-      enabled: true,
-      isCorrect,
-      message: isCorrect ? undefined : 'De uitleg is nog niet juist.',
-    };
-  }
-
-  return { enabled: true, isCorrect: true };
+  return {
+    enabled: true,
+    isCorrect,
+  };
 }
 
 function validateField(
@@ -149,10 +133,7 @@ export function validateQuestion(
 }
 
 export function isAnswerReady(question: ExerciseQuestion, answer: ExerciseAnswer) {
-  const hasReasoning =
-    !question.reasoning?.enabled ||
-    !question.reasoning.required ||
-    Boolean(answer.reasoning?.trim());
+  const hasReasoning = !question.reasoning || Boolean(answer.reasoning?.trim());
 
   if (!hasReasoning) {
     return false;
@@ -165,9 +146,7 @@ export function isAnswerReady(question: ExerciseQuestion, answer: ExerciseAnswer
   return question.blanks.every((blank) => {
     const hasBlankAnswer = Boolean(answer.blanks?.[blank.id]?.trim());
     const hasBlankReasoning =
-      !blank.reasoning?.enabled ||
-      !blank.reasoning.required ||
-      Boolean(answer.blankReasonings?.[blank.id]?.trim());
+      !blank.reasoning || Boolean(answer.blankReasonings?.[blank.id]?.trim());
 
     return hasBlankAnswer && hasBlankReasoning;
   });

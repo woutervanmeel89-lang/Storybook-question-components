@@ -102,16 +102,9 @@ export const reasoningQuestions: ExerciseQuestion[] = [
       },
     ],
     reasoning: {
-      enabled: true,
-      required: true,
       prompt: 'Explique pourquoi on utilise cette forme.',
       acceptedAnswers: ['a + le', 'contraction de a et le', 'a le devient au'],
       validationMode: 'contains',
-      feedback: {
-        correct: 'Ton explication est correcte.',
-        incorrect: 'Mentionne la contraction de a et le.',
-        solution: 'A + le devient au.',
-      },
     },
     feedback: {
       correct: 'Correct.',
@@ -134,16 +127,9 @@ export const blankReasoningQuestions: ExerciseQuestion[] = [
         label: 'Participe passe 1',
         acceptedAnswers: ['cachés'],
         reasoning: {
-          enabled: true,
-          required: true,
           prompt: 'Raisonnement pour cachés',
           acceptedAnswers: ['accord avec le sujet', 'accord avec le sujet etre'],
           validationMode: 'contains',
-          feedback: {
-            correct: 'Le raisonnement est correct.',
-            incorrect: "Mentionne l'accord avec le sujet avec etre.",
-            solution: "Accord avec le sujet avec l'auxiliaire etre.",
-          },
         },
       },
       {
@@ -151,21 +137,12 @@ export const blankReasoningQuestions: ExerciseQuestion[] = [
         label: 'Participe passe 2',
         acceptedAnswers: ['vus'],
         reasoning: {
-          enabled: true,
-          required: true,
           prompt: 'Raisonnement pour vus',
           acceptedAnswers: [
             "l'infinitif prend le sujet du verbe principal",
             'ils',
           ],
           validationMode: 'contains',
-          feedback: {
-            correct: 'Le raisonnement est correct.',
-            incorrect:
-              "Explique que l'infinitif prend le sujet du verbe principal.",
-            solution:
-              "L'infinitif prend le sujet du verbe principal : ils.",
-          },
         },
       },
     ],

@@ -39,16 +39,6 @@ const labels = {
   completionTitle: 'Klaar',
   emptyMessage: 'Er zijn geen oefeningen om te tonen.',
   emptyTitle: 'Geen vragen',
-  feedbackCorrectTitle: 'Juist',
-  feedbackIncorrectTitle: 'Nog niet juist',
-  feedbackSolutionTitle: 'Oplossing',
-  reasoningLabels: {
-    acceptedAnswersTitle: 'Geaccepteerde antwoorden',
-    correctFallback: 'De uitleg is juist.',
-    feedbackTitle: 'Extra uitleg',
-    incorrectFallback: 'De uitleg is nog niet juist.',
-    solutionTitle: 'Voorbeeld',
-  },
   repeatRoundLabel: 'Herhaalronde',
 };
 
@@ -61,14 +51,15 @@ describe('QuestionPager', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows feedback after submit', async () => {
+  it('does not show global feedback after submit', async () => {
     const user = userEvent.setup();
     render(<QuestionPager {...labels} questions={questions} />);
 
     await user.type(screen.getByLabelText('Réponse'), 'je vais');
     await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
-    expect(screen.getByText('Très bien.')).toBeInTheDocument();
+    expect(screen.queryByText('Très bien.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Juist')).not.toBeInTheDocument();
   });
 
   it('shows accepted answers after an incorrect short answer', async () => {
@@ -119,12 +110,13 @@ describe('QuestionPager', () => {
     await user.type(screen.getByLabelText('Preposition'), 'au');
     await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
-    expect(screen.getByText('Oplossing:')).toBeInTheDocument();
     expect(screen.getByText('a la')).toBeInTheDocument();
+    expect(screen.queryByText('Oplossing:')).not.toBeInTheDocument();
+    expect(screen.queryByText('Preposition:')).not.toBeInTheDocument();
     expect(screen.queryByText('Verbe: allons')).not.toBeInTheDocument();
   });
 
-  it('shows accepted reasoning answers prominently after incorrect reasoning', async () => {
+  it('keeps reasoning feedback inline after incorrect reasoning', async () => {
     const user = userEvent.setup();
     render(
       <QuestionPager
@@ -138,16 +130,9 @@ describe('QuestionPager', () => {
               { id: 'prep', label: 'Preposition', acceptedAnswers: ['au'] },
             ],
             reasoning: {
-              enabled: true,
-              required: true,
               prompt: 'Explain why.',
               acceptedAnswers: ['a + le', 'a le devient au'],
               validationMode: 'contains',
-              feedback: {
-                correct: 'Correct.',
-                incorrect: 'Mention the contraction.',
-                solution: 'A + le devient au.',
-              },
             },
             feedback: {
               correct: 'Correct.',
@@ -163,11 +148,12 @@ describe('QuestionPager', () => {
     await user.type(screen.getByLabelText('Explain why.'), 'wrong');
     await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
 
-    expect(screen.getByText('Geaccepteerde antwoorden')).toBeInTheDocument();
-    expect(screen.getByText('a + le')).toBeInTheDocument();
-    expect(screen.getByText('a le devient au')).toBeInTheDocument();
-    expect(screen.getByText('Extra uitleg')).toBeInTheDocument();
-    expect(screen.getByText('Mention the contraction.')).toBeInTheDocument();
+    expect(screen.getByText('a + le / a le devient au')).toBeInTheDocument();
+    expect(screen.queryByText('Geaccepteerde antwoorden')).not.toBeInTheDocument();
+    expect(screen.queryByText('Extra uitleg')).not.toBeInTheDocument();
+    expect(screen.queryByText('Mention the contraction.')).not.toBeInTheDocument();
+    expect(screen.queryByText('De uitleg is nog niet juist.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Try again.')).not.toBeInTheDocument();
   });
 
   it('goes to the next question after feedback', async () => {
@@ -187,7 +173,8 @@ describe('QuestionPager', () => {
 
     await user.type(screen.getByLabelText('Réponse'), 'wrong');
     await user.click(screen.getByRole('button', { name: 'Verifiëren' }));
-    expect(screen.getByText('Regarde encore le verbe aller.')).toBeInTheDocument();
+    expect(screen.queryByText('Regarde encore le verbe aller.')).not.toBeInTheDocument();
+    expect(screen.getByText('je vais')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Verdergaan' }));
     await user.type(screen.getByLabelText('Préposition'), 'au');

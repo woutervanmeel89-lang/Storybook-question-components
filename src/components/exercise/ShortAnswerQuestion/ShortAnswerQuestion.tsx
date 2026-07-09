@@ -10,16 +10,13 @@ export function ShortAnswerQuestion({
   disabled,
   onChange,
   question,
-  solutionTitle,
   validation,
 }: ShortAnswerQuestionProps) {
   const classes = [styles.question, className].filter(Boolean).join(' ');
   const fieldValidation = validation?.fields.shortAnswer;
   const solutionMessage =
     fieldValidation?.isCorrect === false ? (
-      <>
-        {solutionTitle}: <strong>{question.acceptedAnswers.join(' / ')}</strong>
-      </>
+      <strong>{question.acceptedAnswers.join(' / ')}</strong>
     ) : undefined;
 
   return (
@@ -33,7 +30,7 @@ export function ShortAnswerQuestion({
         value={answer.shortAnswer ?? ''}
         disabled={disabled}
       />
-      {question.reasoning?.enabled ? (
+      {question.reasoning ? (
         <ReasoningField
           reasoning={question.reasoning}
           value={answer.reasoning ?? ''}

@@ -19,9 +19,8 @@ function ReasoningFieldExample() {
     <ReasoningField
       onChange={setValue}
       reasoning={{
-        enabled: true,
-        required: true,
         prompt: 'Explique pourquoi on utilise cette forme.',
+        acceptedAnswers: ['a + le', 'contraction de a et le', 'a le devient au'],
       }}
       value={value}
     />

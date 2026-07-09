@@ -1,7 +1,6 @@
 export { Button } from './components/Button';
 export type { ButtonProps } from './components/Button';
 export {
-  FeedbackBox,
   FillInTheBlankQuestion,
   NextButton,
   QuestionPager,
@@ -11,13 +10,10 @@ export {
   TextInput,
 } from './components/exercise';
 export type {
-  FeedbackBoxProps,
-  FeedbackBoxReasoningFeedback,
   FillInTheBlankQuestionProps,
   NextButtonProps,
   QuestionPagerButtonLabels,
   QuestionPagerProps,
-  QuestionPagerReasoningLabels,
   QuestionTypographyProps,
   ReasoningFieldProps,
   ShortAnswerQuestionProps,

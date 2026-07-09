@@ -29,16 +29,6 @@ const labels = {
   completionTitle: 'Klaar',
   emptyMessage: 'Er zijn geen oefeningen om te tonen.',
   emptyTitle: 'Geen vragen',
-  feedbackCorrectTitle: 'Juist',
-  feedbackIncorrectTitle: 'Nog niet juist',
-  feedbackSolutionTitle: 'Oplossing',
-  reasoningLabels: {
-    acceptedAnswersTitle: 'Geaccepteerde antwoorden',
-    correctFallback: 'De uitleg is juist.',
-    feedbackTitle: 'Extra uitleg',
-    incorrectFallback: 'De uitleg is nog niet juist.',
-    solutionTitle: 'Voorbeeld',
-  },
   repeatRoundLabel: 'Herhaalronde',
 };
 

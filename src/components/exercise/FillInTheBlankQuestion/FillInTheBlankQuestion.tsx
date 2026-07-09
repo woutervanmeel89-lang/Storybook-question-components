@@ -49,7 +49,6 @@ export function FillInTheBlankQuestion({
   disabled,
   onChange,
   question,
-  solutionTitle,
   validation,
 }: FillInTheBlankQuestionProps) {
   const classes = [styles.question, className].filter(Boolean).join(' ');
@@ -62,7 +61,7 @@ export function FillInTheBlankQuestion({
   );
   const hasInlineBlanks = renderedInlineBlankIds.size > 0;
   const hasInlineBlankReasonings = question.blanks.some(
-    (blank) => renderedInlineBlankIds.has(blank.id) && blank.reasoning?.enabled,
+    (blank) => renderedInlineBlankIds.has(blank.id) && blank.reasoning,
   );
 
   function updateBlank(blankId: string, value: string) {
@@ -86,14 +85,13 @@ export function FillInTheBlankQuestion({
   }
 
   function getBlankReasoningField(blank: (typeof question.blanks)[number]) {
-    if (!blank.reasoning?.enabled) {
+    if (!blank.reasoning) {
       return null;
     }
 
     return (
       <ReasoningField
         disabled={disabled}
-        errorMessage={blank.reasoning.feedback?.incorrect}
         id={`${question.id}-${blank.id}-reasoning`}
         key={`${blank.id}-reasoning`}
         onChange={(reasoning) => updateBlankReasoning(blank.id, reasoning)}
@@ -106,9 +104,7 @@ export function FillInTheBlankQuestion({
 
   function getBlankSolutionMessage(blank: (typeof question.blanks)[number]) {
     return validation?.fields[blank.id]?.isCorrect === false ? (
-      <>
-        {solutionTitle}: <strong>{blank.acceptedAnswers.join(' / ')}</strong>
-      </>
+      <strong>{blank.acceptedAnswers.join(' / ')}</strong>
     ) : undefined;
   }
 
@@ -173,7 +169,7 @@ export function FillInTheBlankQuestion({
                   key={blank.id}
                   role="alert"
                 >
-                  {blank.label ?? blank.id}: {solutionMessage}
+                  {solutionMessage}
                 </p>
               ) : null;
             })}
@@ -206,7 +202,7 @@ export function FillInTheBlankQuestion({
           ))}
       </div>
 
-      {question.reasoning?.enabled ? (
+      {question.reasoning ? (
         <ReasoningField
           disabled={disabled}
           onChange={(reasoning) => onChange({ ...answer, reasoning })}

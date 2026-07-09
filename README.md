@@ -8,7 +8,6 @@ React component library voor interactieve oefenvragen. Het project bevat herbrui
 - `ShortAnswerQuestion`: open vraag met een tekstantwoord.
 - `FillInTheBlankQuestion`: invulvraag met inline placeholders zoals `{preposition}`.
 - `ReasoningField`: optioneel uitlegveld bij een vraag of bij een specifiek invulveld.
-- `FeedbackBox`: feedback met correct/incorrect tekst, oplossing en uitleg.
 - Validatiehelpers: `validateQuestion`, `isAnswerReady`, `matchesAcceptedAnswer` en `normalizeAnswer`.
 
 ## Installatie
@@ -88,9 +87,6 @@ export function Exercise() {
       completionMessage="Alle vragen zijn juist beantwoord."
       emptyTitle="Geen vragen"
       emptyMessage="Er zijn geen oefeningen om te tonen."
-      feedbackCorrectTitle="Juist"
-      feedbackIncorrectTitle="Nog niet juist"
-      feedbackSolutionTitle="Oplossing"
       repeatRoundLabel="Herhaalronde"
     />
   );

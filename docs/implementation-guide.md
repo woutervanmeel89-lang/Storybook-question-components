@@ -129,9 +129,6 @@ export function ExercisePage({ questions }: ExercisePageProps) {
       completionMessage="Alle vragen zijn juist beantwoord."
       emptyTitle="Geen vragen"
       emptyMessage="Er zijn geen oefeningen om te tonen."
-      feedbackCorrectTitle="Juist"
-      feedbackIncorrectTitle="Nog niet juist"
-      feedbackSolutionTitle="Oplossing"
       repeatRoundLabel="Herhaalronde"
     />
   );
@@ -203,16 +200,9 @@ const question = {
     },
   ],
   reasoning: {
-    enabled: true,
-    required: true,
     prompt: 'Explique pourquoi on utilise cette forme.',
     acceptedAnswers: ['a + le', 'contraction de a et le', 'a le devient au'],
     validationMode: 'contains',
-    feedback: {
-      correct: 'Ton explication est correcte.',
-      incorrect: 'Mentionne la contraction de a et le.',
-      solution: 'A + le devient au.',
-    },
   },
   feedback: {
     correct: 'Correct.',
@@ -242,8 +232,6 @@ const question = {
       label: 'Participe passe 1',
       acceptedAnswers: ['cachés'],
       reasoning: {
-        enabled: true,
-        required: true,
         prompt: 'Raisonnement pour cachés',
         acceptedAnswers: ['accord avec le sujet', 'accord avec le sujet etre'],
         validationMode: 'contains',
@@ -254,8 +242,6 @@ const question = {
       label: 'Participe passe 2',
       acceptedAnswers: ['vus'],
       reasoning: {
-        enabled: true,
-        required: true,
         prompt: 'Raisonnement pour vus',
         acceptedAnswers: [
           "l'infinitif prend le sujet du verbe principal",

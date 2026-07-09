@@ -37,7 +37,6 @@ describe('FillInTheBlankQuestion', () => {
             handleChange(nextAnswer);
           }}
           question={question}
-          solutionTitle="Oplossing"
         />
       );
     }
@@ -57,13 +56,13 @@ describe('FillInTheBlankQuestion', () => {
         answer={{ blanks: { prep: 'a' } }}
         onChange={() => undefined}
         question={question}
-        solutionTitle="Oplossing"
         validation={validation}
       />,
     );
 
-    expect(screen.getByText('Oplossing:')).toBeInTheDocument();
     expect(screen.getByText('au')).toBeInTheDocument();
+    expect(screen.queryByText('Oplossing:')).not.toBeInTheDocument();
+    expect(screen.queryByText('Preposition:')).not.toBeInTheDocument();
   });
 
   it('captures reasoning for a specific blank', async () => {
@@ -78,9 +77,8 @@ describe('FillInTheBlankQuestion', () => {
           label: 'Preposition',
           acceptedAnswers: ['au'],
           reasoning: {
-            enabled: true,
-            required: true,
             prompt: 'Raisonnement',
+            acceptedAnswers: ['a + le'],
           },
         },
       ],
@@ -97,7 +95,6 @@ describe('FillInTheBlankQuestion', () => {
             handleChange(nextAnswer);
           }}
           question={reasoningQuestion}
-          solutionTitle="Oplossing"
         />
       );
     }
@@ -122,15 +119,9 @@ describe('FillInTheBlankQuestion', () => {
           label: 'Preposition',
           acceptedAnswers: ['au'],
           reasoning: {
-            enabled: true,
-            required: true,
             prompt: 'Raisonnement',
             acceptedAnswers: ['a + le'],
             validationMode: 'contains',
-            feedback: {
-              correct: 'Correct.',
-              incorrect: 'Mentionne la contraction.',
-            },
           },
         },
       ],
@@ -145,11 +136,12 @@ describe('FillInTheBlankQuestion', () => {
         answer={{ blanks: { prep: 'au' }, blankReasonings: { prep: 'wrong' } }}
         onChange={() => undefined}
         question={reasoningQuestion}
-        solutionTitle="Oplossing"
         validation={validation}
       />,
     );
 
-    expect(screen.getByText('Mentionne la contraction.')).toBeInTheDocument();
+    expect(screen.getByText('a + le')).toBeInTheDocument();
+    expect(screen.queryByText('Mentionne la contraction.')).not.toBeInTheDocument();
+    expect(screen.queryByText('De uitleg is nog niet juist.')).not.toBeInTheDocument();
   });
 });
