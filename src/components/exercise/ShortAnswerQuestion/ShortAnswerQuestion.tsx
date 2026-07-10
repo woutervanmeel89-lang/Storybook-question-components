@@ -24,6 +24,7 @@ export function ShortAnswerQuestion({
       <QuestionTypography eyebrow="Question">{question.prompt}</QuestionTypography>
       <TextInput
         errorMessage={solutionMessage}
+        isCorrect={fieldValidation?.isCorrect === true}
         label="Réponse"
         onChange={(shortAnswer) => onChange({ ...answer, shortAnswer })}
         placeholder="Écris ta réponse"

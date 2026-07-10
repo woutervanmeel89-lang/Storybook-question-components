@@ -1,6 +1,6 @@
 import type {
+  FieldValidationResult,
   ReasoningConfig,
-  ReasoningValidationResult,
 } from '../../../types/exercise';
 
 export interface ReasoningFieldProps {
@@ -10,5 +10,5 @@ export interface ReasoningFieldProps {
   className?: string;
   disabled?: boolean;
   id?: string;
-  validation?: ReasoningValidationResult;
+  validation?: FieldValidationResult;
 }

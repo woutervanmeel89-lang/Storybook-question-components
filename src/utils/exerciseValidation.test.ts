@@ -18,11 +18,6 @@ describe('exerciseValidation', () => {
       type: 'short-answer',
       prompt: "Quelle est la traduction de 'ik ga' ?",
       acceptedAnswers: ['je vais'],
-      feedback: {
-        correct: 'Correct.',
-        incorrect: 'Essaie encore.',
-        solution: 'Je vais',
-      },
     };
 
     expect(validateQuestion(question, { shortAnswer: 'je vais' }).isCorrect).toBe(
@@ -42,11 +37,6 @@ describe('exerciseValidation', () => {
         { id: 'first', acceptedAnswers: ['au'] },
         { id: 'second', acceptedAnswers: ['marché'] },
       ],
-      feedback: {
-        correct: 'Correct.',
-        incorrect: 'Essaie encore.',
-        solution: 'Je vais au marché.',
-      },
     };
 
     expect(
@@ -102,11 +92,6 @@ describe('exerciseValidation', () => {
           },
         },
       ],
-      feedback: {
-        correct: 'Correct.',
-        incorrect: 'Essaie encore.',
-        solution: 'Ils etaient cachés.',
-      },
     };
 
     expect(
@@ -139,11 +124,6 @@ describe('exerciseValidation', () => {
           },
         },
       ],
-      feedback: {
-        correct: 'Correct.',
-        incorrect: 'Essaie encore.',
-        solution: 'Sans etre vus.',
-      },
     };
 
     expect(isAnswerReady(question, { blanks: { seen: 'vus' } })).toBe(false);
@@ -155,3 +135,4 @@ describe('exerciseValidation', () => {
     ).toBe(true);
   });
 });
+

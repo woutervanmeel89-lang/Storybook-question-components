@@ -115,7 +115,6 @@ type ShortAnswerQuestionData = {
   prompt: string;
   acceptedAnswers: string[];
   caseSensitive?: boolean;
-  feedback: QuestionFeedback;
   reasoning?: ReasoningConfig;
 };
 ```
@@ -134,7 +133,6 @@ type FillInTheBlankQuestionData = {
     caseSensitive?: boolean;
     reasoning?: ReasoningConfig;
   }>;
-  feedback: QuestionFeedback;
   reasoning?: ReasoningConfig;
 };
 ```
@@ -153,17 +151,6 @@ type ExerciseAnswer = {
 ```
 
 Voor `short-answer` gebruik je `shortAnswer`. Voor `fill-in-the-blank` gebruik je `blanks`, met de blank id als key. Gebruik `blankReasonings` voor uitlegvelden die aan een specifieke blank gekoppeld zijn.
-
-### QuestionFeedback
-
-```ts
-type QuestionFeedback = {
-  correct: string;
-  incorrect: string;
-  solution: string;
-  explanation?: string;
-};
-```
 
 ### ReasoningConfig
 
@@ -192,21 +179,13 @@ Geeft terug:
 ```ts
 type QuestionValidationResult = {
   isCorrect: boolean;
-  mainCorrect: boolean;
-  reasoning: {
-    enabled: boolean;
-    isCorrect: boolean;
-    message?: string;
-  };
-  blankReasonings: Record<string, {
-    enabled: boolean;
-    isCorrect: boolean;
-    message?: string;
-  }>;
-  fields: Record<string, {
-    isCorrect: boolean;
-    message?: string;
-  }>;
+  reasoning: FieldValidationResult;
+  blankReasonings: Record<string, FieldValidationResult>;
+  fields: Record<string, FieldValidationResult>;
+};
+
+type FieldValidationResult = {
+  isCorrect: boolean;
 };
 ```
 

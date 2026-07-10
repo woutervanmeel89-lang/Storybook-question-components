@@ -10,18 +10,10 @@ export type ReasoningConfig = {
   customValidator?: (answer: string) => boolean;
 };
 
-export type QuestionFeedback = {
-  correct: string;
-  incorrect: string;
-  solution: string;
-  explanation?: string;
-};
-
 export type BaseQuestion = {
   id: string;
   type: QuestionType;
   prompt: string;
-  feedback: QuestionFeedback;
   reasoning?: ReasoningConfig;
 };
 
@@ -57,17 +49,11 @@ export type ExerciseAnswer = {
 
 export type FieldValidationResult = {
   isCorrect: boolean;
-  message?: string;
-};
-
-export type ReasoningValidationResult = FieldValidationResult & {
-  enabled: boolean;
 };
 
 export type QuestionValidationResult = {
   isCorrect: boolean;
-  mainCorrect: boolean;
-  reasoning: ReasoningValidationResult;
-  blankReasonings: Record<string, ReasoningValidationResult>;
+  reasoning: FieldValidationResult;
+  blankReasonings: Record<string, FieldValidationResult>;
   fields: Record<string, FieldValidationResult>;
 };

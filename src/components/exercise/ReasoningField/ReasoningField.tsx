@@ -21,6 +21,7 @@ export function ReasoningField({
           validation?.isCorrect === false ? solutionMessage : undefined
         }
         id={id}
+        isCorrect={validation?.isCorrect === true}
         label={reasoning.prompt}
         onChange={onChange}
         placeholder="Écris ton explication"

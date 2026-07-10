@@ -10,22 +10,12 @@ const questions: ExerciseQuestion[] = [
     type: 'short-answer',
     prompt: "Quelle est la traduction de 'ik ga' en français ?",
     acceptedAnswers: ['je vais'],
-    feedback: {
-      correct: 'Très bien.',
-      incorrect: 'Regarde encore le verbe aller.',
-      solution: 'Je vais',
-    },
   },
   {
     id: 'second',
     type: 'fill-in-the-blank',
     prompt: 'Complète la phrase : Je vais ___ marché.',
     blanks: [{ id: 'prep', label: 'Préposition', acceptedAnswers: ['au'] }],
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'Regarde la contraction.',
-      solution: 'Je vais au marché.',
-    },
   },
 ];
 
@@ -96,11 +86,6 @@ describe('QuestionPager', () => {
               { id: 'verb', label: 'Verbe', acceptedAnswers: ['allons'] },
               { id: 'prep', label: 'Preposition', acceptedAnswers: ['a la'] },
             ],
-            feedback: {
-              correct: 'Correct.',
-              incorrect: 'Regarde encore.',
-              solution: 'Nous allons a la boulangerie.',
-            },
           },
         ]}
       />,
@@ -133,11 +118,6 @@ describe('QuestionPager', () => {
               prompt: 'Explain why.',
               acceptedAnswers: ['a + le', 'a le devient au'],
               validationMode: 'contains',
-            },
-            feedback: {
-              correct: 'Correct.',
-              incorrect: 'Try again.',
-              solution: 'Je parle au professeur.',
             },
           },
         ]}
@@ -229,3 +209,4 @@ describe('QuestionPager', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 });
+

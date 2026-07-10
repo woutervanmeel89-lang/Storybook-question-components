@@ -6,23 +6,12 @@ export const shortAnswerQuestions: ExerciseQuestion[] = [
     type: 'short-answer',
     prompt: "Quelle est la traduction de 'ik ga' en francais ?",
     acceptedAnswers: ['je vais', "j'y vais"],
-    feedback: {
-      correct: 'Tres bien.',
-      incorrect: 'Regarde encore le verbe aller.',
-      solution: 'Je vais',
-      explanation: "'Je vais' est la forme correcte de 'ik ga'.",
-    },
   },
   {
     id: 'short-bonjour',
     type: 'short-answer',
     prompt: "Comment dit-on 'goedemorgen' en francais ?",
     acceptedAnswers: ['bonjour'],
-    feedback: {
-      correct: 'Exact.',
-      incorrect: 'Pense a la salutation la plus courante.',
-      solution: 'Bonjour',
-    },
   },
 ];
 
@@ -38,12 +27,6 @@ export const fillInTheBlankQuestions: ExerciseQuestion[] = [
         acceptedAnswers: ['au'],
       },
     ],
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'Regarde la contraction avec le masculin singulier.',
-      solution: 'Je vais au marche.',
-      explanation: "'A' + 'le' devient 'au'.",
-    },
   },
   {
     id: 'blank-ecole',
@@ -56,11 +39,6 @@ export const fillInTheBlankQuestions: ExerciseQuestion[] = [
         acceptedAnswers: ["a l'", 'a l’'],
       },
     ],
-    feedback: {
-      correct: 'Bien joue.',
-      incorrect: "Devant une voyelle, on utilise a l'.",
-      solution: "Elle va a l'ecole.",
-    },
   },
 ];
 
@@ -81,11 +59,6 @@ export const multipleBlankQuestions: ExerciseQuestion[] = [
         acceptedAnswers: ['a la'],
       },
     ],
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'Controle le verbe aller et la preposition.',
-      solution: 'Nous allons a la boulangerie apres l ecole.',
-    },
   },
 ];
 
@@ -105,12 +78,6 @@ export const reasoningQuestions: ExerciseQuestion[] = [
       prompt: 'Explique pourquoi on utilise cette forme.',
       acceptedAnswers: ['a + le', 'contraction de a et le', 'a le devient au'],
       validationMode: 'contains',
-    },
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'La preposition doit etre contractee.',
-      solution: 'Je parle au professeur.',
-      explanation: "'Professeur' est masculin singulier avec l'article 'le'.",
     },
   },
 ];
@@ -146,12 +113,6 @@ export const blankReasoningQuestions: ExerciseQuestion[] = [
         },
       },
     ],
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'Controle les participes passes et leurs accords.',
-      solution:
-        'Ils etaient cachés dans un coin de la piece d ou ils pouvaient voir sans etre vus.',
-    },
   },
 ];
 
@@ -167,11 +128,7 @@ export const retryQuestions: ExerciseQuestion[] = [
     type: 'short-answer',
     prompt: "Quelle est la traduction de 'je mange' en neerlandais ?",
     acceptedAnswers: ['ik eet'],
-    feedback: {
-      correct: 'Correct.',
-      incorrect: 'Le verbe manger correspond a eten.',
-      solution: 'Ik eet',
-    },
   },
   fillInTheBlankQuestions[0],
 ];
+

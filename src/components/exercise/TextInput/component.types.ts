@@ -6,4 +6,5 @@ export interface TextInputProps
   value: string;
   onChange: (value: string) => void;
   errorMessage?: ReactNode;
+  isCorrect?: boolean;
 }

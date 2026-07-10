@@ -54,28 +54,6 @@ type BaseQuestion = {
   id: string;
   type: 'fill-in-the-blank' | 'short-answer';
   prompt: string;
-  feedback: {
-    correct: string;
-    incorrect: string;
-    solution: string;
-    explanation?: string;
-  };
-};
-```
-
-Een short-answer vraag:
-
-```ts
-const question = {
-  id: 'short-bonjour',
-  type: 'short-answer',
-  prompt: "Comment dit-on 'goedemorgen' en francais ?",
-  acceptedAnswers: ['bonjour'],
-  feedback: {
-    correct: 'Exact.',
-    incorrect: 'Pense a la salutation la plus courante.',
-    solution: 'Bonjour',
-  },
 } satisfies ExerciseQuestion;
 ```
 
@@ -93,12 +71,6 @@ const question = {
       acceptedAnswers: ['au'],
     },
   ],
-  feedback: {
-    correct: 'Correct.',
-    incorrect: 'Regarde la contraction avec le masculin singulier.',
-    solution: 'Je vais au marche.',
-    explanation: "'A' + 'le' devient 'au'.",
-  },
 } satisfies ExerciseQuestion;
 ```
 
@@ -141,7 +113,7 @@ export function ExercisePage({ questions }: ExercisePageProps) {
 - antwoordstate per vraag bijhouden;
 - controleren of een antwoord klaar is;
 - valideren met `validateQuestion`;
-- feedback tonen;
+- inline validatiefouten tonen;
 - foute vragen opnieuw aanbieden in een herhaalronde.
 
 ## 5. Bouw een eigen flow wanneer nodig
@@ -204,11 +176,6 @@ const question = {
     acceptedAnswers: ['a + le', 'contraction de a et le', 'a le devient au'],
     validationMode: 'contains',
   },
-  feedback: {
-    correct: 'Correct.',
-    incorrect: 'La preposition doit etre contractee.',
-    solution: 'Je parle au professeur.',
-  },
 } satisfies ExerciseQuestion;
 ```
 
@@ -251,12 +218,6 @@ const question = {
       },
     },
   ],
-  feedback: {
-    correct: 'Correct.',
-    incorrect: 'Controle les participes passes et leurs accords.',
-    solution:
-      'Ils etaient cachés dans un coin de la piece d ou ils pouvaient voir sans etre vus.',
-  },
 } satisfies ExerciseQuestion;
 ```
 
@@ -269,8 +230,6 @@ Aanbevolen afspraken voor implementatie:
 - Gebruik stabiele, unieke `id` waarden. Deze worden gebruikt voor answer state en herhaalrondes.
 - Zet alle mogelijke correcte varianten in `acceptedAnswers`.
 - Gebruik `caseSensitive: true` alleen wanneer hoofdletters echt betekenis hebben.
-- Houd feedback kort: `incorrect` helpt bij de volgende poging, `solution` toont het juiste antwoord.
-- Voeg `explanation` toe wanneer de app ook leereffect na feedback moet tonen.
 - Gebruik Storybook stories om nieuwe vraagtypes en edge cases te controleren.
 
 ## 8. Test voor oplevering
@@ -291,3 +250,4 @@ Controleer in Storybook minimaal:
 - een vraag met meerdere blanks;
 - een vraag met reasoning;
 - een volledig `QuestionPager` scenario met een fout antwoord en herhaalronde.
+

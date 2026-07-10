@@ -14,11 +14,6 @@ const question: FillInTheBlankQuestionData = {
   type: 'fill-in-the-blank',
   prompt: 'Complete la phrase : Je vais ___ marche.',
   blanks: [{ id: 'prep', label: 'Preposition', acceptedAnswers: ['au'] }],
-  feedback: {
-    correct: 'Correct.',
-    incorrect: 'Essaie encore.',
-    solution: 'Je vais au marche.',
-  },
 };
 
 describe('FillInTheBlankQuestion', () => {
@@ -63,6 +58,50 @@ describe('FillInTheBlankQuestion', () => {
     expect(screen.getByText('au')).toBeInTheDocument();
     expect(screen.queryByText('Oplossing:')).not.toBeInTheDocument();
     expect(screen.queryByText('Preposition:')).not.toBeInTheDocument();
+  });
+
+  it('shows success feedback for a correct blank', () => {
+    const validation = validateQuestion(question, { blanks: { prep: 'au' } });
+
+    render(
+      <FillInTheBlankQuestion
+        answer={{ blanks: { prep: 'au' } }}
+        onChange={() => undefined}
+        question={question}
+        validation={validation}
+      />,
+    );
+
+    expect(screen.getByLabelText('Correct antwoord')).toBeInTheDocument();
+    expect(screen.getByLabelText('Preposition')).toHaveAttribute(
+      'data-correct',
+      'true',
+    );
+  });
+
+  it('shows success feedback for a correct inline blank', () => {
+    const inlineQuestion: FillInTheBlankQuestionData = {
+      ...question,
+      prompt: 'Complete la phrase : Je vais {prep} marche.',
+    };
+    const validation = validateQuestion(inlineQuestion, {
+      blanks: { prep: 'au' },
+    });
+
+    render(
+      <FillInTheBlankQuestion
+        answer={{ blanks: { prep: 'au' } }}
+        onChange={() => undefined}
+        question={inlineQuestion}
+        validation={validation}
+      />,
+    );
+
+    expect(screen.getByLabelText('Correct antwoord')).toBeInTheDocument();
+    expect(screen.getByLabelText('Preposition')).toHaveAttribute(
+      'data-correct',
+      'true',
+    );
   });
 
   it('captures reasoning for a specific blank', async () => {

@@ -9,6 +9,11 @@
   font-weight: 650;
 }
 
+.inputWrapper {
+  position: relative;
+  display: block;
+}
+
 .input {
   width: 100%;
   min-height: 2.5rem;
@@ -29,9 +34,36 @@
     border-color: #b42318;
   }
 
+  &[data-correct='true'] {
+    border-color: #12805c;
+    padding-right: 2.5rem;
+  }
+
   &:disabled {
     background: #f6f7f9;
     color: #475569;
+  }
+}
+
+.correctIcon {
+  position: absolute;
+  top: 50%;
+  right: 0.875rem;
+  width: 1rem;
+  height: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  &::before {
+    position: absolute;
+    left: 0.25rem;
+    top: 0.0625rem;
+    width: 0.375rem;
+    height: 0.75rem;
+    border: solid #12805c;
+    border-width: 0 0.1875rem 0.1875rem 0;
+    content: '';
+    transform: rotate(45deg);
   }
 }
 

@@ -129,6 +129,7 @@ export function FillInTheBlankQuestion({
               const inputId = `${question.id}-${blank.id}`;
               const errorId = `${inputId}-error`;
               const solutionMessage = getBlankSolutionMessage(blank);
+              const isCorrect = validation?.fields[blank.id]?.isCorrect === true;
 
               return (
                 <span className={styles.inlineBlank} key={blank.id}>
@@ -141,11 +142,19 @@ export function FillInTheBlankQuestion({
                     }
                     aria-invalid={Boolean(solutionMessage)}
                     className={styles.inlineInput}
+                    data-correct={isCorrect || undefined}
                     disabled={disabled}
                     id={inputId}
                     onChange={(event) => updateBlank(blank.id, event.target.value)}
                     value={answer.blanks?.[blank.id] ?? ''}
                   />
+                  {isCorrect ? (
+                    <span
+                      aria-label="Correct antwoord"
+                      className={styles.inlineCorrectIcon}
+                      role="img"
+                    />
+                  ) : null}
                 </span>
               );
             })}
@@ -192,6 +201,7 @@ export function FillInTheBlankQuestion({
               <TextInput
                 disabled={disabled}
                 errorMessage={getBlankSolutionMessage(blank)}
+                isCorrect={validation?.fields[blank.id]?.isCorrect === true}
                 label={blank.label ?? `Reponse ${index + 1}`}
                 onChange={(value) => updateBlank(blank.id, value)}
                 placeholder="Complete"

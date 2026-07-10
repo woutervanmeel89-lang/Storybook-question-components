@@ -4,7 +4,6 @@ import type {
   FieldValidationResult,
   QuestionValidationResult,
   ReasoningConfig,
-  ReasoningValidationResult,
 } from '../types/exercise';
 
 export function normalizeAnswer(answer: string, caseSensitive = false) {
@@ -39,16 +38,15 @@ export function matchesAcceptedAnswer(
 export function validateReasoning(
   reasoning: ReasoningConfig | undefined,
   answer = '',
-): ReasoningValidationResult {
+): FieldValidationResult {
   if (!reasoning) {
-    return { enabled: false, isCorrect: true };
+    return { isCorrect: true };
   }
 
   const trimmedAnswer = answer.trim();
 
   if (!trimmedAnswer) {
     return {
-      enabled: true,
       isCorrect: false,
     };
   }
@@ -56,7 +54,6 @@ export function validateReasoning(
   if (reasoning.validationMode === 'custom') {
     const isCorrect = reasoning.customValidator?.(trimmedAnswer) ?? true;
     return {
-      enabled: true,
       isCorrect,
     };
   }
@@ -67,7 +64,6 @@ export function validateReasoning(
   });
 
   return {
-    enabled: true,
     isCorrect,
   };
 }
@@ -83,7 +79,6 @@ function validateField(
 
   return {
     isCorrect,
-    message: isCorrect ? undefined : 'Dit antwoord is nog niet juist.',
   };
 }
 
@@ -92,7 +87,7 @@ export function validateQuestion(
   answer: ExerciseAnswer,
 ): QuestionValidationResult {
   const fields: Record<string, FieldValidationResult> = {};
-  const blankReasonings: Record<string, ReasoningValidationResult> = {};
+  const blankReasonings: Record<string, FieldValidationResult> = {};
 
   if (question.type === 'short-answer') {
     fields.shortAnswer = validateField(
@@ -117,15 +112,14 @@ export function validateQuestion(
     });
   }
 
-  const mainCorrect = Object.values(fields).every((field) => field.isCorrect);
+  const fieldsCorrect = Object.values(fields).every((field) => field.isCorrect);
   const reasoning = validateReasoning(question.reasoning, answer.reasoning);
   const blankReasoningsCorrect = Object.values(blankReasonings).every(
     (blankReasoning) => blankReasoning.isCorrect,
   );
 
   return {
-    isCorrect: mainCorrect && reasoning.isCorrect && blankReasoningsCorrect,
-    mainCorrect,
+    isCorrect: fieldsCorrect && reasoning.isCorrect && blankReasoningsCorrect,
     reasoning,
     blankReasonings,
     fields,

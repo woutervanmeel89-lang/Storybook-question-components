@@ -11,11 +11,6 @@ const question: ShortAnswerQuestionData = {
   type: 'short-answer',
   prompt: "Quelle est la traduction de 'ik ga' en francais ?",
   acceptedAnswers: ['je vais', "j'y vais"],
-  feedback: {
-    correct: 'Correct.',
-    incorrect: 'Essaie encore.',
-    solution: 'Je vais',
-  },
 };
 
 describe('ShortAnswerQuestion', () => {
@@ -59,5 +54,21 @@ describe('ShortAnswerQuestion', () => {
 
     expect(screen.getByText("je vais / j'y vais")).toBeInTheDocument();
     expect(screen.queryByText('Oplossing:')).not.toBeInTheDocument();
+  });
+
+  it('shows success feedback for a correct answer', () => {
+    const validation = validateQuestion(question, { shortAnswer: 'je vais' });
+
+    render(
+      <ShortAnswerQuestion
+        answer={{ shortAnswer: 'je vais' }}
+        onChange={() => undefined}
+        question={question}
+        validation={validation}
+      />,
+    );
+
+    expect(screen.getByLabelText('Correct antwoord')).toBeInTheDocument();
+    expect(screen.getByLabelText(/ponse/i)).toHaveAttribute('data-correct', 'true');
   });
 });

@@ -6,6 +6,7 @@ export function TextInput({
   disabled,
   errorMessage,
   id,
+  isCorrect,
   label,
   onChange,
   value,
@@ -20,16 +21,26 @@ export function TextInput({
       <label className={styles.label} htmlFor={inputId}>
         {label}
       </label>
-      <input
-        {...inputProps}
-        aria-describedby={errorMessage ? errorId : undefined}
-        aria-invalid={Boolean(errorMessage)}
-        className={styles.input}
-        disabled={disabled}
-        id={inputId}
-        onChange={(event) => onChange(event.target.value)}
-        value={value}
-      />
+      <span className={styles.inputWrapper}>
+        <input
+          {...inputProps}
+          aria-describedby={errorMessage ? errorId : undefined}
+          aria-invalid={Boolean(errorMessage)}
+          className={styles.input}
+          data-correct={isCorrect || undefined}
+          disabled={disabled}
+          id={inputId}
+          onChange={(event) => onChange(event.target.value)}
+          value={value}
+        />
+        {isCorrect ? (
+          <span
+            aria-label="Correct antwoord"
+            className={styles.correctIcon}
+            role="img"
+          />
+        ) : null}
+      </span>
       {errorMessage ? (
         <p className={styles.error} id={errorId} role="alert">
           {errorMessage}

@@ -26,12 +26,10 @@ export type {
   FieldValidationResult,
   FillInBlank,
   FillInTheBlankQuestionData,
-  QuestionFeedback,
   QuestionType,
   QuestionValidationResult,
   ReasoningConfig,
   ReasoningValidationMode,
-  ReasoningValidationResult,
   ShortAnswerQuestionData,
 } from './types/exercise';
 export {

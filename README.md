@@ -4,7 +4,7 @@ React component library voor interactieve oefenvragen. Het project bevat herbrui
 
 ## Wat zit erin?
 
-- `QuestionPager`: complete oefenflow met voortgang, controle, feedback en herhaalronde voor foute antwoorden.
+- `QuestionPager`: complete oefenflow met voortgang, controle en herhaalronde voor foute antwoorden.
 - `ShortAnswerQuestion`: open vraag met een tekstantwoord.
 - `FillInTheBlankQuestion`: invulvraag met inline placeholders zoals `{preposition}`.
 - `ReasoningField`: optioneel uitlegveld bij een vraag of bij een specifiek invulveld.
@@ -65,12 +65,6 @@ const questions: ExerciseQuestion[] = [
     type: 'short-answer',
     prompt: "Quelle est la traduction de 'ik ga' en francais ?",
     acceptedAnswers: ['je vais', "j'y vais"],
-    feedback: {
-      correct: 'Tres bien.',
-      incorrect: 'Regarde encore le verbe aller.',
-      solution: 'Je vais',
-      explanation: "'Je vais' est la forme correcte de 'ik ga'.",
-    },
   },
 ];
 
