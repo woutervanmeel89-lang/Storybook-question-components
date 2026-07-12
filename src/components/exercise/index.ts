@@ -12,3 +12,5 @@ export { ShortAnswerQuestion } from './ShortAnswerQuestion';
 export type { ShortAnswerQuestionProps } from './ShortAnswerQuestion';
 export { TextInput } from './TextInput';
 export type { TextInputProps } from './TextInput';
+export { TextSelectionQuestion } from './TextSelectionQuestion';
+export type { TextSelectionQuestionProps } from './TextSelectionQuestion';

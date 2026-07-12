@@ -8,6 +8,7 @@ export {
   ReasoningField,
   ShortAnswerQuestion,
   TextInput,
+  TextSelectionQuestion,
 } from './components/exercise';
 export type {
   FillInTheBlankQuestionProps,
@@ -18,6 +19,7 @@ export type {
   ReasoningFieldProps,
   ShortAnswerQuestionProps,
   TextInputProps,
+  TextSelectionQuestionProps,
 } from './components/exercise';
 export type {
   BaseQuestion,
@@ -31,6 +33,9 @@ export type {
   ReasoningConfig,
   ReasoningValidationMode,
   ShortAnswerQuestionData,
+  TextSelectionOption,
+  TextSelectionQuestionData,
+  TextSelectionUnit,
 } from './types/exercise';
 export {
   isAnswerReady,

@@ -112,6 +112,17 @@ export function validateQuestion(
     });
   }
 
+  if (question.type === 'text-selection') {
+    const selectedIds = new Set(answer.selectedOptionIds ?? []);
+    const correctIds = new Set(question.correctOptionIds);
+
+    question.options.forEach((option) => {
+      fields[option.id] = {
+        isCorrect: selectedIds.has(option.id) === correctIds.has(option.id),
+      };
+    });
+  }
+
   const fieldsCorrect = Object.values(fields).every((field) => field.isCorrect);
   const reasoning = validateReasoning(question.reasoning, answer.reasoning);
   const blankReasoningsCorrect = Object.values(blankReasonings).every(
@@ -135,6 +146,11 @@ export function isAnswerReady(question: ExerciseQuestion, answer: ExerciseAnswer
 
   if (question.type === 'short-answer') {
     return Boolean(answer.shortAnswer?.trim());
+  }
+
+
+  if (question.type === 'text-selection') {
+    return Boolean(answer.selectedOptionIds?.length);
   }
 
   return question.blanks.every((blank) => {

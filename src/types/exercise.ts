@@ -1,4 +1,4 @@
-export type QuestionType = 'fill-in-the-blank' | 'short-answer';
+export type QuestionType = 'fill-in-the-blank' | 'short-answer' | 'text-selection';
 
 export type ReasoningValidationMode = 'contains' | 'exact' | 'custom';
 
@@ -36,15 +36,31 @@ export type ShortAnswerQuestionData = BaseQuestion & {
   caseSensitive?: boolean;
 };
 
+export type TextSelectionUnit = 'word' | 'sentence';
+
+export type TextSelectionOption = {
+  id: string;
+  text: string;
+};
+
+export type TextSelectionQuestionData = BaseQuestion & {
+  type: 'text-selection';
+  selectionUnit: TextSelectionUnit;
+  options: TextSelectionOption[];
+  correctOptionIds: string[];
+};
+
 export type ExerciseQuestion =
   | FillInTheBlankQuestionData
-  | ShortAnswerQuestionData;
+  | ShortAnswerQuestionData
+  | TextSelectionQuestionData;
 
 export type ExerciseAnswer = {
   shortAnswer?: string;
   blanks?: Record<string, string>;
   blankReasonings?: Record<string, string>;
   reasoning?: string;
+  selectedOptionIds?: string[];
 };
 
 export type FieldValidationResult = {

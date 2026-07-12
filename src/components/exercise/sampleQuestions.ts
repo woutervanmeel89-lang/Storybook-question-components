@@ -132,3 +132,27 @@ export const retryQuestions: ExerciseQuestion[] = [
   fillInTheBlankQuestions[0],
 ];
 
+export const textSelectionQuestions: ExerciseQuestion[] = [
+  {
+    id: 'selection-discours-indirect',
+    type: 'text-selection',
+    prompt: 'Sélectionnez les phrases au discours indirect.',
+    selectionUnit: 'sentence',
+    options: [
+      { id: 'phrase-1', text: 'Il me dit qu’il ne veut pas y aller.' },
+      { id: 'phrase-2', text: 'J’ai peur, dit-elle.' },
+      { id: 'phrase-3', text: 'Elle prétend qu’elle n’a rien entendu.' },
+      { id: 'phrase-4', text: 'Je t’ai dit de ne pas mentir.' },
+      {
+        id: 'phrase-5',
+        text: 'Le médecin a dit qu’il essaierait de sauver le blessé.',
+      },
+      {
+        id: 'phrase-6',
+        text: 'Ne pars pas encore, dit-elle, j’ai encore quelque chose à te raconter.',
+      },
+    ],
+    correctOptionIds: ['phrase-1', 'phrase-3', 'phrase-4', 'phrase-5'],
+  },
+];
+

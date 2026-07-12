@@ -134,5 +134,28 @@ describe('exerciseValidation', () => {
       }),
     ).toBe(true);
   });
+
+  it('validates the exact text selection', () => {
+    const question: ExerciseQuestion = {
+      id: 'selection-1',
+      type: 'text-selection',
+      prompt: 'Select the verbs.',
+      selectionUnit: 'word',
+      options: [
+        { id: 'she', text: 'She' },
+        { id: 'walks', text: 'walks' },
+        { id: 'home', text: 'home.' },
+      ],
+      correctOptionIds: ['walks'],
+    };
+
+    expect(validateQuestion(question, { selectedOptionIds: ['walks'] }).isCorrect).toBe(
+      true,
+    );
+    expect(validateQuestion(question, { selectedOptionIds: ['she'] }).isCorrect).toBe(
+      false,
+    );
+    expect(isAnswerReady(question, {})).toBe(false);
+  });
 });
 

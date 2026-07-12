@@ -8,6 +8,7 @@ import { isAnswerReady, validateQuestion } from '../../../utils';
 import { FillInTheBlankQuestion } from '../FillInTheBlankQuestion';
 import { NextButton } from '../NextButton';
 import { ShortAnswerQuestion } from '../ShortAnswerQuestion';
+import { TextSelectionQuestion } from '../TextSelectionQuestion';
 import styles from './QuestionPager.module.scss';
 import type { QuestionPagerProps } from './component.types';
 
@@ -23,6 +24,10 @@ function emptyAnswer(question: ExerciseQuestion): ExerciseAnswer {
           .map((blank) => [blank.id, '']),
       ),
     };
+  }
+
+  if (question.type === 'text-selection') {
+    return { selectedOptionIds: [] };
   }
 
   return { shortAnswer: '' };
@@ -163,8 +168,16 @@ export function QuestionPager({
             question={currentQuestion}
             validation={showFeedback ? validation : undefined}
           />
-        ) : (
+        ) : currentQuestion.type === 'fill-in-the-blank' ? (
           <FillInTheBlankQuestion
+            answer={currentAnswer}
+            disabled={showFeedback}
+            onChange={updateAnswer}
+            question={currentQuestion}
+            validation={showFeedback ? validation : undefined}
+          />
+        ) : (
+          <TextSelectionQuestion
             answer={currentAnswer}
             disabled={showFeedback}
             onChange={updateAnswer}
